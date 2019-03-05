@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PNFDVBB');</script>
+      <!-- End Google Tag Manager -->
+    
+
+    <!-- Basic -->
+    <title>Custom scalars and enums | Apollo Server</title>
+    <meta name="description" content="Add custom scalar and enum types to a schema.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <link rel="shortcut icon" type="image/png" href="../images/favicon-apollo.png" sizes="16x16 32x32 64x64">
+    
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.apollographql.com/docs/apollo-server">
+    <meta property="og:title" content="Custom scalars and enums | Apollo Server">
+    <meta property="og:description" content="Add custom scalar and enum types to a schema.">
+    <meta property="og:image" content="">
+    <meta name="twitter:site" content="@apollographql">
+    <meta name="twitter:title" content="Custom scalars and enums | Apollo Server">
+    <meta name="twitter:description" content="Add custom scalar and enum types to a schema.">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="">
+
+    
+    
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic" rel="stylesheet" type="text/css">
+    
+      <link rel="stylesheet" href="../style/bundle-apollo.css">
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  </head>
+  <body class="">
+    
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFDVBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+      
+
+  <div class="nav sunset">
+    <div class="nav-group left">
+      <div class="nav-item mobile-button js-sidebar-toggle show-mobile">
+        <span class="icon-menu"></span>
+      </div>
+      <div class="nav-item">
+        
+        <a class="logo-wrapper" href="https://www.apollographql.com/" title="Apollo ">
+          <img src="../images/logo-apollo-space-left.svg" alt="Apollo" class="logo">
+          
+            <span></span>
+          
+        </a>
+      </div>
+    </div>
+
+
+    
+      <div class="nav-group right">
+        <div id="nav-container" class="show-desktop"></div>
+        <script src="https://apollographql-nav.netlify.com/index.js"></script>
+        <script>ApolloNav.initNav({ theme: 'light' }, 'nav-container')</script>
+      </div>
+    
+    </div>
+  
+
+  
+
+<div class="sidebar charcoal">
+  <div class="panel">
+    
+      <div id="sidebar-panel-nav"></div>
+      <script>ApolloNav.initNav({ theme: 'light', id: 'mobile-nav' }, 'sidebar-panel-nav')</script>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Apollo Server</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v2">2</option>
+            
+              <option value="v1">1</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-area">
+        <div class="input-symbol small round">
+          <input type="text" placeholder="Search Apollo Server" id="desktop-search-input">
+          <span class="icon-search"></span>
+        </div>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+
+        <li>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../." class="sidebar-link ">
+                  <span>Introduction</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../getting-started.html" class="sidebar-link ">
+                  <span>Getting started</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../whats-new.html" class="sidebar-link ">
+                  <span>What's new?</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Essentials</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/schema.html" class="sidebar-link ">
+                  <span>Writing a schema</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/server.html" class="sidebar-link ">
+                  <span>Building a server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/data.html" class="sidebar-link ">
+                  <span>Fetching data with resolvers</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Features</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="mocking.html" class="sidebar-link ">
+                  <span>Mocking</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="errors.html" class="sidebar-link ">
+                  <span>Error handling</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="data-sources.html" class="sidebar-link ">
+                  <span>Data sources</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="subscriptions.html" class="sidebar-link ">
+                  <span>Subscriptions</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="metrics.html" class="sidebar-link ">
+                  <span>Monitoring and metrics</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="graphql-playground.html" class="sidebar-link ">
+                  <span>GraphQL Playground</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc current">
+                <a href="" class="sidebar-link current">
+                  <span>Custom scalars and enums</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="unions-interfaces.html" class="sidebar-link ">
+                  <span>Unions and interfaces</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="directives.html" class="sidebar-link ">
+                  <span>Using schema directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="creating-directives.html" class="sidebar-link ">
+                  <span>Implementing directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="authentication.html" class="sidebar-link ">
+                  <span>Authentication</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="testing.html" class="sidebar-link ">
+                  <span>Integration testing</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Deployment</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/heroku.html" class="sidebar-link ">
+                  <span>Heroku</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/lambda.html" class="sidebar-link ">
+                  <span>Lambda</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/now.html" class="sidebar-link ">
+                  <span>Now</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">API Reference</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/apollo-server.html" class="sidebar-link ">
+                  <span>apollo-server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/graphql-tools.html" class="sidebar-link ">
+                  <span>graphql-tools</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Migration</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-two-dot.html" class="sidebar-link ">
+                  <span>Migrating to v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-engine.html" class="sidebar-link ">
+                  <span>Using Engine with v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-file-uploads.html" class="sidebar-link ">
+                  <span>File uploads in Node.js < v8.5.0</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+    </ul>
+  </div>
+</div>
+
+    <div class="content">
+
+      <div class="header-content">
+        <div class="header-wrapper">
+          <div class="title-wrapper">
+            <h1 class="title-page">
+              Custom scalars and enums
+            </h1>
+            
+              <div class="subtitle-page">
+                Add custom scalar and enum types to a schema.
+              </div>
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="document-formatting">
+          <p>The GraphQL specification includes the following default scalar types: <code>Int</code>, <code>Float</code>, <code>String</code>, <code>Boolean</code> and <code>ID</code>. While this covers most of the use cases, some need to support custom atomic data types (e.g. <code>Date</code>), or add validation to an existing type. To enable this, GraphQL allows custom scalar types. Enumerations are similar to custom scalars with the limitation that their values can only be one of a pre-defined list of strings.</p>
+<h2 id="custom-scalars">Custom scalars</h2>
+
+<p>To define a custom scalar, add it to the schema string with the following notation:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">scalar MyCustomScalar
+</code></pre>
+<p>Afterwards, define the behavior of a <code>MyCustomScalar</code> custom scalar by passing an instance of the <a href="http://graphql.org/graphql-js/type/#graphqlscalartype" target="_blank" rel="noopener"><code>GraphQLScalarType</code></a> class in the <a href="https://www.apollographql.com/docs/graphql-tools/resolvers.html#Resolver-map">resolver map</a>. This instance can be defined with a <a href="#Using-a-package">dependency</a> or in <a href="#graphqlscalartype">source code</a>.</p>
+<p>For more information about GraphQL’s type system, please refer to the <a href="http://graphql.org/graphql-js/type/" target="_blank" rel="noopener">official documentation</a> or to the <a href="https://github.com/mugli/learning-graphql/blob/master/7.%20Deep%20Dive%20into%20GraphQL%20Type%20System.md" target="_blank" rel="noopener">Learning GraphQL</a> tutorial.</p>
+<p>Note that <a href="https://github.com/apollostack/apollo-client/issues/585" target="_blank" rel="noopener">Apollo Client does not currently have a way to automatically interpret custom scalars</a>, so there’s no way to automatically reverse the serialization on the client.</p>
+<h3 id="Using-a-package"><a href="#Using-a-package" class="headerlink" title="Using a package"></a>Using a package</h3><p>Here, we’ll take the <a href="https://github.com/taion/graphql-type-json" target="_blank" rel="noopener">graphql-type-json</a> package as an example to demonstrate what can be done. This npm package defines a JSON GraphQL scalar type.</p>
+<p>Add the <code>graphql-type-json</code> package to the project’s dependencies :</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-shell">$ npm install graphql-type-json
+</code></pre>
+<p>In code, require the type defined by in the npm package and use it :</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+const GraphQLJSON = require(&#39;graphql-type-json&#39;);
+
+const schemaString = gql`
+  scalar JSON
+
+  type Foo {
+    aField: JSON
+  }
+
+  type Query {
+    foo: Foo
+  }
+`;
+
+const resolveFunctions = {
+  JSON: GraphQLJSON
+};
+
+const server = new ApolloServer({ typeDefs: schemaString, resolvers: resolveFunctions });
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<p>Remark : <code>GraphQLJSON</code> is a <a href="http://graphql.org/graphql-js/type/#graphqlscalartype" target="_blank" rel="noopener"><code>GraphQLScalarType</code></a> instance.</p>
+<h3 id="graphqlscalartype" title="GraphQLScalarType">Custom <code>GraphQLScalarType</code> instance</h3>
+
+<p>Defining a <a href="http://graphql.org/graphql-js/type/#graphqlscalartype" target="_blank" rel="noopener">GraphQLScalarType</a> instance provides more control over the custom scalar and can be added to Apollo server in the following way:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+const { GraphQLScalarType, Kind } = require(&#39;graphql&#39;);
+
+const myCustomScalarType = new GraphQLScalarType({
+  name: &#39;MyCustomScalar&#39;,
+  description: &#39;Description of my custom scalar type&#39;,
+  serialize(value) {
+    let result;
+    &#x2F;&#x2F; Implement custom behavior by setting the &#39;result&#39; variable
+    return result;
+  },
+  parseValue(value) {
+    let result;
+    &#x2F;&#x2F; Implement custom behavior here by setting the &#39;result&#39; variable
+    return result;
+  },
+  parseLiteral(ast) {
+    switch (ast.kind) {
+      case Kind.Int:
+      &#x2F;&#x2F; return a literal value, such as 1 or &#39;static string&#39;
+    }
+  }
+});
+
+const schemaString = gql`
+  scalar MyCustomScalar
+
+  type Foo {
+    aField: MyCustomScalar
+  }
+
+  type Query {
+    foo: Foo
+  }
+`;
+
+const resolverFunctions = {
+  MyCustomScalar: myCustomScalarType
+};
+
+const server = new ApolloServer({ typeDefs: schemaString, resolvers: resolverFunctions });
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<h2 id="examples">Custom scalar examples</h2>
+
+<p>Let’s look at a couple of examples to demonstrate how a custom scalar type can be defined.</p>
+<h3 id="Date-as-a-scalar"><a href="#Date-as-a-scalar" class="headerlink" title="Date as a scalar"></a>Date as a scalar</h3><p>The goal is to define a <code>Date</code> data type for returning <code>Date</code> values from the database. Let’s say we’re using a MongoDB driver that uses the native JavaScript <code>Date</code> data type. The <code>Date</code> data type can be easily serialized as a number using the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime" target="_blank" rel="noopener"><code>getTime()</code> method</a>. Therefore, we would like our GraphQL server to send and receive <code>Date</code>s as numbers when serializing to JSON. This number will be resolved to a <code>Date</code> on the server representing the date value. On the client, the user can simply create a new date from the received numeric value.</p>
+<p>The following is the implementation of the <code>Date</code> data type. First, the schema:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const typeDefs = gql`
+  scalar Date
+
+  type MyType {
+    created: Date
+  }
+`
+</code></pre>
+<p>Next, the resolver:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { GraphQLScalarType } = require(&#39;graphql&#39;);
+const { Kind } = require(&#39;graphql&#x2F;language&#39;);
+
+const resolvers = {
+  Date: new GraphQLScalarType({
+    name: &#39;Date&#39;,
+    description: &#39;Date custom scalar type&#39;,
+    parseValue(value) {
+      return new Date(value); &#x2F;&#x2F; value from the client
+    },
+    serialize(value) {
+      return value.getTime(); &#x2F;&#x2F; value sent to the client
+    },
+    parseLiteral(ast) {
+      if (ast.kind === Kind.INT) {
+        return parseInt(ast.value, 10); &#x2F;&#x2F; ast value is always in string format
+      }
+      return null;
+    },
+  }),
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<h3 id="Validations"><a href="#Validations" class="headerlink" title="Validations"></a>Validations</h3><p>In this example, we follow the <a href="http://graphql.org/docs/api-reference-type-system/" target="_blank" rel="noopener">official GraphQL documentation</a> for the scalar datatype, which demonstrates how to validate a database field that should only contain odd numbers in GraphQL. First, the schema:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const typeDefs = gql`
+  scalar Odd
+
+  type MyType {
+    oddValue: Odd
+  }
+`
+</code></pre>
+<p>Next, the resolver:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+const { GraphQLScalarType } = require(&#39;graphql&#39;);
+const { Kind } = require(&#39;graphql&#x2F;language&#39;);
+
+function oddValue(value) {
+  return value % 2 === 1 ? value : null;
+}
+
+const resolvers = {
+  Odd: new GraphQLScalarType({
+    name: &#39;Odd&#39;,
+    description: &#39;Odd custom scalar type&#39;,
+    parseValue: oddValue,
+    serialize: oddValue,
+    parseLiteral(ast) {
+      if (ast.kind === Kind.INT) {
+        return oddValue(parseInt(ast.value, 10));
+      }
+      return null;
+    },
+  }),
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<h2 id="enums">Enums</h2>
+
+<p>An Enum is similar to a scalar type, but it can only be one of several values defined in the schema. Enums are most useful in a situation where the user must pick from a prescribed list of options. Additionally enums improve development velocity, since they will auto-complete in tools like GraphQL Playground.</p>
+<p>In the schema language, an enum looks like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">enum AllowedColor {
+  RED
+  GREEN
+  BLUE
+}
+</code></pre>
+<p>An enum can be used anywhere a scalar can be:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Query {
+  favoriteColor: AllowedColor # As a return value
+  avatar(borderColor: AllowedColor): String # As an argument
+}
+</code></pre>
+<p>A query might look like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">query {
+  avatar(borderColor: RED)
+}
+</code></pre>
+<p>To pass the enum value as a variable, use a string of JSON, like so:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">query MyAvatar($color: AllowedColor) {
+  avatar(borderColor: $color)
+}
+</code></pre>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">{
+  &quot;color&quot;: &quot;RED&quot;
+}
+</code></pre>
+<p>Putting it all together:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+
+const typeDefs = gql`
+  enum AllowedColor {
+    RED
+    GREEN
+    BLUE
+  }
+
+  type Query {
+    favoriteColor: AllowedColor # As a return value
+    avatar(borderColor: AllowedColor): String # As an argument
+  }
+`;
+
+const resolvers = {
+  Query: {
+    favoriteColor: () =&gt; &#39;RED&#39;,
+    avatar: (parent, args) =&gt; {
+      &#x2F;&#x2F; args.borderColor is &#39;RED&#39;, &#39;GREEN&#39;, or &#39;BLUE&#39;
+    },
+  }
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<h3 id="internal-values">Internal values</h3>
+
+<p>Sometimes a backend forces a different value for an enum internally than in the public API. In this example the API contains <code>RED</code>, however in resolvers we use <code>#f00</code> instead. The <code>resolvers</code> argument to <code>ApolloServer</code> allows the addition of custom values to enums that only exist internally:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const resolvers = {
+  AllowedColor: {
+    RED: &#39;#f00&#39;,
+    GREEN: &#39;#0f0&#39;,
+    BLUE: &#39;#00f&#39;,
+  }
+};
+</code></pre>
+<p>These don’t change the public API at all and the resolvers accept these value instead of the schema value, like so:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const resolvers = {
+  AllowedColor: {
+    RED: &#39;#f00&#39;,
+    GREEN: &#39;#0f0&#39;,
+    BLUE: &#39;#00f&#39;,
+  },
+  Query: {
+    favoriteColor: () =&gt; &#39;#f00&#39;,
+    avatar: (parent, args) =&gt; {
+      &#x2F;&#x2F; args.borderColor is &#39;#f00&#39;, &#39;#0f0&#39;, or &#39;#00f&#39;
+    },
+  }
+};
+</code></pre>
+<p>Most of the time, this feature of enums isn’t used unless interoperating with another library that expects its values in a different form.</p>
+
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="content-wrapper">
+          
+          
+         
+              <a class="link primary prev" href="graphql-playground.html">
+                <span class="icon-arrow-left-alt"></span>
+                <span class="subtitle-pagination">Previous</span>
+                GraphQL Playground
+              </a>
+         
+          
+          
+           
+              <a class="link primary next" href="unions-interfaces.html">
+                <span class="subtitle-pagination">Next</span>
+                Unions and interfaces
+                  <span class="icon-arrow-right-alt"></span>
+              </a>
+           
+          
+        </div>
+      </div>
+
+      <div class="github">
+        <a class="link tertiary " href="https://github.com/apollographql/apollo-server/tree/master/docs/source/features/scalars-enums.md" target="_blank">
+          <span class="icon-github"></span>Edit on GitHub</a>
+      </div>
+
+      
+    </div>
+
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/combine/npm/prismjs@1.15.0/components/prism-bash.min.js,npm/prismjs@1.15.0/components/prism-graphql.min.js,npm/prismjs@1.15.0/components/prism-json.min.js,npm/prismjs@1.15.0/components/prism-jsx.min.js,npm/prismjs@1.15.0/components/prism-less.min.js,npm/prismjs@1.15.0/components/prism-swift.min.js,npm/prismjs@1.15.0/components/prism-typescript.min.js,npm/prismjs@1.15.0/components/prism-yaml.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/smooth-scroll@12.1.5/dist/js/smooth-scroll.min.js"></script>
+
+    <script>
+      // Used by the main.js script below.
+      docsConfigRoot = '/docs/apollo-server/';
+    </script>
+    <script src="../script/main.js"></script>
+
+    
+      <script type="text/javascript" src="//cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+    </script>
+
+    
+
+    
+      <script>
+        
+        var analytics;
+
+        <!-- Segment.io -->
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+        analytics.page();
+        }}();
+      </script>
+    
+
+    // search box
+    
+      <script>
+        ['desktop'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: '768e823959d35bbd51e4b2439be13fb7',
+            
+            
+            indexName: 'apollodata',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            },
+            algoliaOptions: {
+              hitsPerPage: 20
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      </script>
+    
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener('load', function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: '#555',
+            },
+            button: {
+              text: '#333',
+              background: '#CCC',
+            },
+          },
+        })
+      });
+    </script>
+  </body>
+</html>

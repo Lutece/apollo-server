@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PNFDVBB');</script>
+      <!-- End Google Tag Manager -->
+    
+
+    <!-- Basic -->
+    <title>What's new? | Apollo Server</title>
+    <meta name="description" content="A quick rundown of big announcements in the Apollo Server ecosystem.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <link rel="shortcut icon" type="image/png" href="images/favicon-apollo.png" sizes="16x16 32x32 64x64">
+    
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.apollographql.com/docs/apollo-server">
+    <meta property="og:title" content="What's new? | Apollo Server">
+    <meta property="og:description" content="A quick rundown of big announcements in the Apollo Server ecosystem.">
+    <meta property="og:image" content="">
+    <meta name="twitter:site" content="@apollographql">
+    <meta name="twitter:title" content="What's new? | Apollo Server">
+    <meta name="twitter:description" content="A quick rundown of big announcements in the Apollo Server ecosystem.">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="">
+
+    
+    
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic" rel="stylesheet" type="text/css">
+    
+      <link rel="stylesheet" href="style/bundle-apollo.css">
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  </head>
+  <body class="">
+    
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFDVBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+      
+
+  <div class="nav sunset">
+    <div class="nav-group left">
+      <div class="nav-item mobile-button js-sidebar-toggle show-mobile">
+        <span class="icon-menu"></span>
+      </div>
+      <div class="nav-item">
+        
+        <a class="logo-wrapper" href="https://www.apollographql.com/" title="Apollo ">
+          <img src="images/logo-apollo-space-left.svg" alt="Apollo" class="logo">
+          
+            <span></span>
+          
+        </a>
+      </div>
+    </div>
+
+
+    
+      <div class="nav-group right">
+        <div id="nav-container" class="show-desktop"></div>
+        <script src="https://apollographql-nav.netlify.com/index.js"></script>
+        <script>ApolloNav.initNav({ theme: 'light' }, 'nav-container')</script>
+      </div>
+    
+    </div>
+  
+
+  
+
+<div class="sidebar charcoal">
+  <div class="panel">
+    
+      <div id="sidebar-panel-nav"></div>
+      <script>ApolloNav.initNav({ theme: 'light', id: 'mobile-nav' }, 'sidebar-panel-nav')</script>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Apollo Server</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v2">2</option>
+            
+              <option value="v1">1</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-area">
+        <div class="input-symbol small round">
+          <input type="text" placeholder="Search Apollo Server" id="desktop-search-input">
+          <span class="icon-search"></span>
+        </div>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+
+        <li>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="." class="sidebar-link ">
+                  <span>Introduction</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="getting-started.html" class="sidebar-link ">
+                  <span>Getting started</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc current">
+                <a href="" class="sidebar-link current">
+                  <span>What's new?</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Essentials</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="essentials/schema.html" class="sidebar-link ">
+                  <span>Writing a schema</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="essentials/server.html" class="sidebar-link ">
+                  <span>Building a server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="essentials/data.html" class="sidebar-link ">
+                  <span>Fetching data with resolvers</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Features</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/mocking.html" class="sidebar-link ">
+                  <span>Mocking</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/errors.html" class="sidebar-link ">
+                  <span>Error handling</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/data-sources.html" class="sidebar-link ">
+                  <span>Data sources</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/subscriptions.html" class="sidebar-link ">
+                  <span>Subscriptions</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/metrics.html" class="sidebar-link ">
+                  <span>Monitoring and metrics</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/graphql-playground.html" class="sidebar-link ">
+                  <span>GraphQL Playground</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/scalars-enums.html" class="sidebar-link ">
+                  <span>Custom scalars and enums</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/unions-interfaces.html" class="sidebar-link ">
+                  <span>Unions and interfaces</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/directives.html" class="sidebar-link ">
+                  <span>Using schema directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/creating-directives.html" class="sidebar-link ">
+                  <span>Implementing directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/authentication.html" class="sidebar-link ">
+                  <span>Authentication</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="features/testing.html" class="sidebar-link ">
+                  <span>Integration testing</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Deployment</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="deployment/heroku.html" class="sidebar-link ">
+                  <span>Heroku</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="deployment/lambda.html" class="sidebar-link ">
+                  <span>Lambda</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="deployment/now.html" class="sidebar-link ">
+                  <span>Now</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">API Reference</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="api/apollo-server.html" class="sidebar-link ">
+                  <span>apollo-server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="api/graphql-tools.html" class="sidebar-link ">
+                  <span>graphql-tools</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Migration</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="migration-two-dot.html" class="sidebar-link ">
+                  <span>Migrating to v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="migration-engine.html" class="sidebar-link ">
+                  <span>Using Engine with v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="migration-file-uploads.html" class="sidebar-link ">
+                  <span>File uploads in Node.js < v8.5.0</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+    </ul>
+  </div>
+</div>
+
+    <div class="content">
+
+      <div class="header-content">
+        <div class="header-wrapper">
+          <div class="title-wrapper">
+            <h1 class="title-page">
+              What's new?
+            </h1>
+            
+              <div class="subtitle-page">
+                A quick rundown of big announcements in the Apollo Server ecosystem.
+              </div>
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="document-formatting">
+          <h2 id="2-0"><a href="#2-0" class="headerlink" title="2.0"></a>2.0</h2><blockquote>
+<p>To upgrade from Apollo Server 1.x, see the <a href="./migration-two-dot.html">2.0 migration guide</a>.  For a more detailed list of smaller changes, see the Apollo Server <a href="https://github.com/apollographql/apollo-server/blob/master/CHANGELOG.md" target="_blank" rel="noopener"><code>CHANGELOG</code></a>.</p>
+</blockquote>
+<p>Apollo Server 2.0 makes building the most powerful and production ready GraphQL app easy. Apollo Server 1.x provided all of the tools necessary to make a great GraphQL backend, allowing the developer to pick and choose from a set of unopinionated tools. Building on 1.x and fully backwards compatible, 2.0’s defaults bake in the best practices and patterns gathered from two years of community feedback and iteration. It is an opinionated, production focused, GraphQL server that works with any backend.</p>
+<p>The following code snippet demonstrates the creation of Apollo Server 2.0 and a few of the new features.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+
+&#x2F;&#x2F; The GraphQL schema
+const typeDefs = gql`
+  type Query {
+    hello: String
+    mockedString: String
+  }
+`;
+
+&#x2F;&#x2F; A map of functions which return data for the schema.
+const resolvers = {
+  Query: {
+    hello: () =&gt;
+      fetch(&#39;https:&#x2F;&#x2F;fourtonfish.com&#x2F;hellosalut&#x2F;?mode=auto&#39;)
+        .then(res =&gt; res.json())
+        .then(data =&gt; data.hello),
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  mocks: true,
+  onHealthCheck: () =&gt; fetch(&#39;https:&#x2F;&#x2F;fourtonfish.com&#x2F;hellosalut&#x2F;?mode=auto&#39;),
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`);
+});
+</code></pre>
+<p>This is just the beginning. We have published a <a href="https://github.com/apollographql/apollo-server/blob/master/ROADMAP.md" target="_blank" rel="noopener">roadmap</a> for all of the features we will be bringing to Apollo Server soon and we would love your help! If you have any interest, you can get involved on <a href="https://github.com/apollographql/apollo-server" target="_blank" rel="noopener">Github</a> or by joining the <a href="https://www.apollographql.com/slack">Apollo Slack</a> and going to the #apollo-server channel.</p>
+<h3 id="Automatic-Persisted-Queries"><a href="#Automatic-Persisted-Queries" class="headerlink" title="Automatic Persisted Queries"></a>Automatic Persisted Queries</h3><p>A persisted query is an ID or hash that can be sent to the server in place of the GraphQL query string. This smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server enables persisted queries without additional server configuration, using an in-memory LRU cache to store the mapping between hash and query string. The persisted query cache can be configured as shown in the following code snippet. To enable persisted queries on the client, follow the <a href="https://www.apollographql.com/docs/guides/performance.html#Automatic-Persisted-Queries">Performance Guide</a>.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style="" data-line="7-12"><code class="language-js">const { ApolloServer } = require(&#39;apollo-server&#39;);
+const { MemcachedCache } = require(&#39;apollo-server-cache-memcached&#39;);
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  persistedQueries: {
+    cache: new MemcachedCache(
+      [&#39;memcached-server-1&#39;, &#39;memcached-server-2&#39;, &#39;memcached-server-3&#39;],
+      { retries: 10, retry: 10000 }, &#x2F;&#x2F; Options
+    ),
+  },
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`);
+});
+</code></pre>
+<p>For more information on automatic persisted queries, check the <a href="https://www.apollographql.com/docs/guides/performance.html#automatic-persisted-queries">APQ section of the performance guide</a>.</p>
+<h3 id="CDN-integration"><a href="#CDN-integration" class="headerlink" title="CDN integration"></a>CDN integration</h3><p>Apollo Server works well with a Content-Distribution Network to cache full GraphQL query results. Apollo Server provides <code>cache-control</code> headers that a CDN uses to determine how long a request should be cached. For subsequent requests, the result will be served directly from the CDN’s cache. A CDN paired with Apollo Server’s persisted queries is especially powerful, since GraphQL operations can be shortened and sent with a HTTP GET request. To enable caching and a CDN in Apollo Server, follow the <a href="https://www.apollographql.com/docs/guides/performance.html#cdn">Performance Guide</a>.</p>
+<h3 id="GraphQL-errors"><a href="#GraphQL-errors" class="headerlink" title="GraphQL errors"></a>GraphQL errors</h3><p>Apollo Server provides the ability to add error codes to categorize errors that occur within resolvers. In addition to an error code, Apollo Server 2 passes error stack traces in development mode to enable a smoother getting started experience.</p>
+<p>This code snippet shows how the new error could be used.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloError, ForbiddenError, AuthenticationError } = require(&quot;apollo-server&quot;);
+
+const resolvers = {
+  Query: {
+    allTodos: (_, _, context) =&gt; {
+      if (!context.scope) {
+        throw AuthenticationError(&quot;You must be logged in to see all todos&quot;);
+      }
+
+      if (context.scope !== &quot;ADMIN&quot;) {
+        throw ForbiddenError(&quot;You must be an administrator to see all todos&quot;);
+      }
+
+      return context.Todos.getAllTodos();
+    },
+  }
+  Mutation: {
+    addTodo: (_, args, context) =&gt; {
+      if(!context.Todos.idAvailable(args.id)) {
+        throw new ApolloError(&#39;The id is already taken&#39;, &#39;DUPLICATE_KEY&#39;,  {field: &#39;id&#39;});
+      }
+
+      return context.Todos.addTodo(args.id, args.todo);
+    }
+  }
+};
+</code></pre>
+<p>For more information, read about <a href="./features/errors.html">errors in Apollo Server 2</a>.</p>
+<h3 id="Schema-mocking"><a href="#Schema-mocking" class="headerlink" title="Schema mocking"></a>Schema mocking</h3><p>Apollo Server 2 allows mocking of a schema with the <code>mocks</code> parameter in the constructor. The <code>mocks</code> parameter can be a boolean to enable the default mocking functions or an object to define custom mock functions by type.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+
+const typeDefs = gql`
+  type Query {
+    hello: String
+    resolved: String
+  }
+`;
+
+const resolvers = {
+  Query: {
+    resolved: () =&gt; &#39;Resolved&#39;,
+  },
+};
+
+const mocks = {
+  Int: () =&gt; 6,
+  Float: () =&gt; 22.1,
+  String: () =&gt; &#39;Hello&#39;,
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  mocks,
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`);
+});
+</code></pre>
+<p>For more information, check out the <a href="./features/mocking.html">feature explanation about mocking</a>.</p>
+<h3 id="Performance-monitoring"><a href="#Performance-monitoring" class="headerlink" title="Performance monitoring"></a>Performance monitoring</h3><p>Apollo Server 2.0 enables GraphQL monitoring out of the box. It reports performance and error data out-of-band to Apollo Engine. And Apollo Engine displays information about every query and schema present in your GraphQL service.</p>
+<p>To set up Apollo Server with Engine, <a href="https://engine.apollographql.com/" target="_blank" rel="noopener">click here</a> to get an Engine API key and provide it to the <code>ENGINE_API_KEY</code> environment variable. Setting an environment variable can be done on the command-line as seen below, or with the <a href="https://www.npmjs.com/package/dotenv" target="_blank" rel="noopener"><code>dotenv</code> npm package</a>.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-bash">#Replace YOUR_API_KEY with the api key for you service in the Engine UI
+ENGINE_API_KEY=YOUR_API_KEY node start-server.js
+</code></pre>
+<p>The simplest option is to pass the Engine API Key directly to the Apollo Server constructor.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style="" data-line="6-8"><code class="language-js">const { ApolloServer } = require(&#39;apollo-server&#39;);
+
+const server = new ApolloSever({
+  typeDefs,
+  resolvers,
+  engine: {
+    apiKey: &#39;YOUR API KEY HERE&#39;,
+  },
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀  Server ready at ${url}`);
+});
+</code></pre>
+<p>For more information, check out the details in the <a href="./features/metrics.html">performance monitoring guide</a>.</p>
+<h3 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h3><p>Apollo Server 2.0 creates a single GraphQL endpoint that provides data and a GUI explorer depending on how the endpoint is accessed. In browser, Apollo Server returns GraphQL playground. For other cases, Apollo Server returns the data for GraphQL requests from other clients, such as Apollo Client, curl, Postman, or Insomnia.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+
+const typeDefs = gql`
+  type Query {
+    hello: String
+  }
+`;
+
+const resolvers = {
+  Query: {
+    hello: () =&gt; &#39;hello&#39;,
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`);
+});
+</code></pre>
+<p>To start in production mode, set the <code>NODE_ENV</code> environment variables to <code>production</code>. For further customization, the Apollo Server constructor options accepts an <code>introspection</code> boolean, which can overwrite the default for the environment.</p>
+<p>For additional information, check out the <a href="./features/graphql-playground.html">guide on configuring GraphQL playground</a>.</p>
+<h3 id="File-Uploads"><a href="#File-Uploads" class="headerlink" title="File Uploads"></a>File Uploads</h3><blockquote>
+<p>Note: This feature is incompatible with <code>graphql-tools</code>‘ schema stitching.  See <a href="https://github.com/apollographql/graphql-tools/issues/671" target="_blank" rel="noopener">this issue</a> for additional details.</p>
+</blockquote>
+<p>For server integrations that support file uploads (e.g. Express, hapi, Koa), Apollo Server enables file uploads by default. To enable file uploads, reference the <code>Upload</code> type in the schema passed to the Apollo Server construction.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+
+const typeDefs = gql`
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
+
+  type Query {
+    uploads: [File]
+  }
+
+  type Mutation {
+    singleUpload(file: Upload!): File!
+  }
+`;
+
+const resolvers = {
+  Query: {
+    uploads: (parent, args) =&gt; {},
+  },
+  Mutation: {
+    singleUpload: (parent, args) =&gt; {
+      return args.file.then(file =&gt; {
+        &#x2F;&#x2F;Contents of Upload scalar: https:&#x2F;&#x2F;github.com&#x2F;jaydenseric&#x2F;graphql-upload#class-graphqlupload
+        &#x2F;&#x2F;file.stream is a node stream that contains the contents of the uploaded file
+        &#x2F;&#x2F;node stream api: https:&#x2F;&#x2F;nodejs.org&#x2F;api&#x2F;stream.html
+        return file;
+      });
+    },
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`);
+});
+</code></pre>
+<blockquote>
+<p>Note: When using <code>typeDefs</code> Apollo Server adds <code>Upload scalar</code> to your schema, so any existing declaration of <code>scalar Upload</code> in the type definitions should be removed. If you create your schema with <code>makeExecutableSchema</code> and pass it to <code>ApolloServer</code> constructor using the <code>schema</code> param, make sure to include <a href="https://www.apollographql.com/docs/guides/file-uploads.html#File-upload-with-schema-param"><code>Upload scalar</code></a>.</p>
+</blockquote>
+<h3 id="Subscriptions"><a href="#Subscriptions" class="headerlink" title="Subscriptions"></a>Subscriptions</h3><p>Subscriptions are enabled by default in integrations that support persistent connections.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql, PubSub } = require(&#39;apollo-server&#39;);
+
+const pubsub = new PubSub();
+const SOMETHING_CHANGED_TOPIC = &#39;something_changed&#39;;
+
+const typeDefs = gql`
+  type Query {
+    hello: String
+  }
+  type Subscription {
+    newMessage: String
+  }
+`;
+
+const resolvers = {
+  Query: {
+    hello: () =&gt; &#39;hello&#39;,
+  },
+  Subscription: {
+    newMessage: {
+      subscribe: () =&gt; pubsub.asyncIterator(SOMETHING_CHANGED_TOPIC),
+    },
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`);
+});
+
+&#x2F;&#x2F;publish events every second
+setInterval(
+  () =&gt;
+    pubsub.publish(SOMETHING_CHANGED_TOPIC, {
+      newMessage: new Date().toString(),
+    }),
+  1000,
+);
+</code></pre>
+<blockquote>
+<p>Note: to disable subscriptions, set <code>subscriptions</code> to <code>false</code> in the options passed to <code>listen</code>.</p>
+</blockquote>
+<p>For more information, check out the <a href="/docs/graphql-subscriptions/">documentation for GraphQL subscriptions</a>.</p>
+<h3 id="Health-checks"><a href="#Health-checks" class="headerlink" title="Health checks"></a>Health checks</h3><p>The default Apollo Server provides a health check endpoint at <code>/.well-known/apollo/server-health</code> that returns a 200 status code by default. If <code>onHealthCheck</code> is defined, the promise returned from the callback determines the status code. A successful resolution causes a 200 and rejection causes a 503. Health checks are often used by load balancers to determine if a server is available.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+
+const typeDefs = gql``;
+const resolvers = {};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  &#x2F;&#x2F;optional parameter
+  onHealthCheck: () =&gt;
+    new Promise((resolve, reject) =&gt; {
+      &#x2F;&#x2F;database check or other asynchronous action
+    }),
+});
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`);
+  console.log(
+    `Try your health check at: ${url}.well-known&#x2F;apollo&#x2F;server-health`,
+  );
+});
+</code></pre>
+
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="content-wrapper">
+          
+          
+         
+              <a class="link primary prev" href="getting-started.html">
+                <span class="icon-arrow-left-alt"></span>
+                <span class="subtitle-pagination">Previous</span>
+                Getting started
+              </a>
+         
+          
+          
+           
+              <a class="link primary next" href="essentials/schema.html">
+                <span class="subtitle-pagination">Next</span>
+                Understanding schema concepts
+                  <span class="icon-arrow-right-alt"></span>
+              </a>
+           
+          
+        </div>
+      </div>
+
+      <div class="github">
+        <a class="link tertiary " href="https://github.com/apollographql/apollo-server/tree/master/docs/source/whats-new.md" target="_blank">
+          <span class="icon-github"></span>Edit on GitHub</a>
+      </div>
+
+      
+    </div>
+
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/combine/npm/prismjs@1.15.0/components/prism-bash.min.js,npm/prismjs@1.15.0/components/prism-graphql.min.js,npm/prismjs@1.15.0/components/prism-json.min.js,npm/prismjs@1.15.0/components/prism-jsx.min.js,npm/prismjs@1.15.0/components/prism-less.min.js,npm/prismjs@1.15.0/components/prism-swift.min.js,npm/prismjs@1.15.0/components/prism-typescript.min.js,npm/prismjs@1.15.0/components/prism-yaml.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/smooth-scroll@12.1.5/dist/js/smooth-scroll.min.js"></script>
+
+    <script>
+      // Used by the main.js script below.
+      docsConfigRoot = '/docs/apollo-server/';
+    </script>
+    <script src="script/main.js"></script>
+
+    
+      <script type="text/javascript" src="//cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+    </script>
+
+    
+
+    
+      <script>
+        
+        var analytics;
+
+        <!-- Segment.io -->
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+        analytics.page();
+        }}();
+      </script>
+    
+
+    // search box
+    
+      <script>
+        ['desktop'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: '768e823959d35bbd51e4b2439be13fb7',
+            
+            
+            indexName: 'apollodata',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            },
+            algoliaOptions: {
+              hitsPerPage: 20
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      </script>
+    
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener('load', function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: '#555',
+            },
+            button: {
+              text: '#333',
+              background: '#CCC',
+            },
+          },
+        })
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PNFDVBB');</script>
+      <!-- End Google Tag Manager -->
+    
+
+    <!-- Basic -->
+    <title>Authentication | Apollo Server</title>
+    <meta name="description" content="How to authorize users and control permissions in your GraphQL API">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <link rel="shortcut icon" type="image/png" href="../images/favicon-apollo.png" sizes="16x16 32x32 64x64">
+    
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.apollographql.com/docs/apollo-server">
+    <meta property="og:title" content="Authentication | Apollo Server">
+    <meta property="og:description" content="How to authorize users and control permissions in your GraphQL API">
+    <meta property="og:image" content="">
+    <meta name="twitter:site" content="@apollographql">
+    <meta name="twitter:title" content="Authentication | Apollo Server">
+    <meta name="twitter:description" content="How to authorize users and control permissions in your GraphQL API">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="">
+
+    
+    
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic" rel="stylesheet" type="text/css">
+    
+      <link rel="stylesheet" href="../style/bundle-apollo.css">
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  </head>
+  <body class="">
+    
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFDVBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+      
+
+  <div class="nav sunset">
+    <div class="nav-group left">
+      <div class="nav-item mobile-button js-sidebar-toggle show-mobile">
+        <span class="icon-menu"></span>
+      </div>
+      <div class="nav-item">
+        
+        <a class="logo-wrapper" href="https://www.apollographql.com/" title="Apollo ">
+          <img src="../images/logo-apollo-space-left.svg" alt="Apollo" class="logo">
+          
+            <span></span>
+          
+        </a>
+      </div>
+    </div>
+
+
+    
+      <div class="nav-group right">
+        <div id="nav-container" class="show-desktop"></div>
+        <script src="https://apollographql-nav.netlify.com/index.js"></script>
+        <script>ApolloNav.initNav({ theme: 'light' }, 'nav-container')</script>
+      </div>
+    
+    </div>
+  
+
+  
+
+<div class="sidebar charcoal">
+  <div class="panel">
+    
+      <div id="sidebar-panel-nav"></div>
+      <script>ApolloNav.initNav({ theme: 'light', id: 'mobile-nav' }, 'sidebar-panel-nav')</script>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Apollo Server</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v2">2</option>
+            
+              <option value="v1">1</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-area">
+        <div class="input-symbol small round">
+          <input type="text" placeholder="Search Apollo Server" id="desktop-search-input">
+          <span class="icon-search"></span>
+        </div>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+
+        <li>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../." class="sidebar-link ">
+                  <span>Introduction</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../getting-started.html" class="sidebar-link ">
+                  <span>Getting started</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../whats-new.html" class="sidebar-link ">
+                  <span>What's new?</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Essentials</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/schema.html" class="sidebar-link ">
+                  <span>Writing a schema</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/server.html" class="sidebar-link ">
+                  <span>Building a server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/data.html" class="sidebar-link ">
+                  <span>Fetching data with resolvers</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Features</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="mocking.html" class="sidebar-link ">
+                  <span>Mocking</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="errors.html" class="sidebar-link ">
+                  <span>Error handling</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="data-sources.html" class="sidebar-link ">
+                  <span>Data sources</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="subscriptions.html" class="sidebar-link ">
+                  <span>Subscriptions</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="metrics.html" class="sidebar-link ">
+                  <span>Monitoring and metrics</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="graphql-playground.html" class="sidebar-link ">
+                  <span>GraphQL Playground</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="scalars-enums.html" class="sidebar-link ">
+                  <span>Custom scalars and enums</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="unions-interfaces.html" class="sidebar-link ">
+                  <span>Unions and interfaces</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="directives.html" class="sidebar-link ">
+                  <span>Using schema directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="creating-directives.html" class="sidebar-link ">
+                  <span>Implementing directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc current">
+                <a href="" class="sidebar-link current">
+                  <span>Authentication</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="testing.html" class="sidebar-link ">
+                  <span>Integration testing</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Deployment</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/heroku.html" class="sidebar-link ">
+                  <span>Heroku</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/lambda.html" class="sidebar-link ">
+                  <span>Lambda</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/now.html" class="sidebar-link ">
+                  <span>Now</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">API Reference</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/apollo-server.html" class="sidebar-link ">
+                  <span>apollo-server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/graphql-tools.html" class="sidebar-link ">
+                  <span>graphql-tools</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Migration</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-two-dot.html" class="sidebar-link ">
+                  <span>Migrating to v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-engine.html" class="sidebar-link ">
+                  <span>Using Engine with v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-file-uploads.html" class="sidebar-link ">
+                  <span>File uploads in Node.js < v8.5.0</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+    </ul>
+  </div>
+</div>
+
+    <div class="content">
+
+      <div class="header-content">
+        <div class="header-wrapper">
+          <div class="title-wrapper">
+            <h1 class="title-page">
+              Authentication
+            </h1>
+            
+              <div class="subtitle-page">
+                How to authorize users and control permissions in your GraphQL API
+              </div>
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="document-formatting">
+          <p>At some point (probably pretty early on) when building a GraphQL endpoint, you’ll probably have to face the question of how to control who can see and interact with the data in your API.</p>
+<p><strong>Authentication</strong> is determining whether a user is logged in or not, and subsequently figuring out <em>which</em> user someone is. <strong>Authorization</strong> is then deciding what the user has permission to do or see.</p>
+<p>This article will primarily be focusing on how to set up authorization for your schema once you know about the user trying to make the request, but we’ll go through one example of authentication just to get some <em>context</em> for what we’re doing.</p>
+<h2 id="context">Putting user info on the context</h2>
+
+<p>Before we get into figuring out user permissions, we have to figure out how to recognize a user first. From HTTP headers, to JSON web tokens, there are a number of ways to handle authentication of users, but once you have your user, controlling access looks pretty similar.</p>
+<p>We’ll be using a login token in an HTTP authorization header as an example.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">&#x2F;&#x2F; using apollo-server 2.x
+const { ApolloServer } = require(&#39;apollo-server&#39;);
+
+const server = new ApolloServer({
+ typeDefs,
+ resolvers,
+ context: ({ req }) =&gt; {
+   &#x2F;&#x2F; get the user token from the headers
+   const token = req.headers.authorization || &#39;&#39;;
+  
+   &#x2F;&#x2F; try to retrieve a user with the token
+   const user = getUser(token);
+  
+   &#x2F;&#x2F; add the user to the context
+   return { user };
+ },
+});
+
+server.listen().then(({ url }) =&gt; {
+ console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<p>So what’s happening here, exactly? This block of code is setting up a new GraphQL server, using Apollo Server 2.0. This new version of Apollo Server simplifies the API for creating new servers, and has some more intelligent defaults. You can read more about it <a href="https://blog.apollographql.com/apollo-server-2-0-30c9bbb4ab5e" target="_blank" rel="noopener">here</a>!</p>
+<p>In this constructor, we pass type definitions and resolvers to the constructor as well as a function to build our <code>context</code> object. The <code>context</code> object is one that gets passed to every single resolver at every level, so we can access it anywhere in our schema code. It’s where we can store things like data fetchers, database connections, and (conveniently) information about the user making the request.</p>
+<p>Since the context is generated again with every new request, we don’t have to worry about cleaning up user data at the end of execution.</p>
+<p>The context function here looks at the request headers, pulls off the header named <code>authorization</code>, and stores it to a variable. It then calls a <code>getUser</code> function with that token, and expects a user to be returned if the token is valid. After that, it returns a context object containing the (potential) user, for all of our resolvers to use.</p>
+<p>The specifics of retrieving a user will look different for each method of authentication, but the final part will look about the same every time. The authorization needs for your schema may require you to put nothing more than <code>{ loggedIn: true }</code> into context, but also may require an id or roles, like <code>{ user: { id: 12345, roles: [&#39;user&#39;, &#39;admin&#39;] } }</code>.</p>
+<p>In the next section, we’ll look at ways to use the user information we now have to secure your schema.</p>
+<h2 id="schema-auth">Schema authorization</h2>
+
+<p>Once we have information about the user making a request, the most basic thing we can do is deny them the ability to run a query at all based on their roles. This is an all-or-nothing approach to authorization that we’ll start with because it’s the simplest. If you choose to block users like this, no fields will be publicly queryable.</p>
+<p>We would want to do this only on very restrictive environments where there is no public access to the schema or any fields, like an internal tool or maybe an independent micro service that we don’t want exposed to the public.</p>
+<p>To do this kind of authorization, we can just modify the context function.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">context: ({ req }) =&gt; {
+ &#x2F;&#x2F; get the user token from the headers
+ const token = req.headers.authorization || &#39;&#39;;
+
+ &#x2F;&#x2F; try to retrieve a user with the token
+ const user = getUser(token);
+
+ &#x2F;&#x2F; optionally block the user
+ &#x2F;&#x2F; we could also check user roles&#x2F;permissions here
+ if (!user) throw new AuthorizationError(&#39;you must be logged in&#39;); 
+
+ &#x2F;&#x2F; add the user to the context
+ return { user };
+},
+</code></pre>
+<p>The only difference from the basic context function is the check for the user. If no user exists or if lookup fails, the function throws an error, and none of the query gets executed.</p>
+<h2 id="resolver-auth">Authorization in resolvers</h2>
+
+<p>Schema authorization may be useful in specific instances, but more commonly, GraphQL schemas will have some fields that need to be public. An example of this would be a news site that wants to show article previews to anyone, but restrict the full body of articles to paying customers only.</p>
+<p>Luckily, GraphQL offers very granular control over data. In GraphQL servers, individual field resolvers have the ability to check user roles and make decisions as to what to return for each user. In the previous sections, we saw how to attach user information to the context object. In the rest of the article, we’ll discuss how to use that context object.</p>
+<p>For our first example, let’s look at a resolver that’s only accessible with a valid user:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">users: (parent, args, context) =&gt; {
+ &#x2F;&#x2F; In this case, we&#39;ll pretend there is no data when
+ &#x2F;&#x2F; we&#39;re not logged in. Another option would be to
+ &#x2F;&#x2F; throw an error.
+ if (!context.user) return [];
+
+ return [&#39;bob&#39;, &#39;jake&#39;];
+}
+</code></pre>
+<p>This example is a field in our schema named <code>users</code> that returns a list of users’ names. The <code>if</code> check on the first line of the function looks at the <code>context</code> generated from our request, checks for a <code>user</code> object, and if one doesn’t exist, returns <code>null</code> for the whole field.</p>
+<p>One choice to make when building out our resolvers is what an unauthorized field should return. In some use cases, returning <code>null</code> here is perfectly valid. Alternatives to this would be to return an empty array, <code>[]</code> or to throw an error, telling the client that they’re not allowed to access that field. For the sake of simplicity, we just returned <code>[]</code> in this example.</p>
+<p>Now let’s expand that example a little further, and only allow users with an <code>admin</code> role to look at our user list. After all, we probably don’t want just anyone to have access to all our users.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">users: (parent, args, context) =&gt; {
+ if (!context.user || !context.user.roles.includes(&#39;admin&#39;)) return null;
+ return context.models.User.getAll();
+}
+</code></pre>
+<p>This example looks almost the same as the previous one, with one addition: it expects the <code>roles</code> array on a user to include an <code>admin</code> role. Otherwise, it returns <code>null</code>. The benefit of doing authorization like this is that we can short-circuit our resolvers and not even call lookup functions when we don’t have permission to use them, limiting the possible errors that could expose sensitive data.</p>
+<p>Because our resolvers have access to everything in the context, an important question we need to ask is how much information we want in the context. For example, we don’t need the user’s id, name, or age (at least not yet). It’s best to keep things out of the context until they’re needed, since they’re easy to add back in later.</p>
+<h2 id="models-auth">Authorization in data models</h2>
+
+<p>As our server gets more complex, there will probably be multiple places in the schema that need to fetch the same kind of data. In our last example, you may have noticed the return array was replaced with a call to <code>context.models.User.getAll()</code>.</p>
+<p>Since the very beginning, <a href="https://www.apollographql.com/docs/graphql-tools/connectors.html">we’ve recommended</a> moving the actual data fetching and transformation logic from resolvers to centralized Model objects that each represent a concept from your application: User, Post, etc. This allows you to make your resolvers a thin routing layer, and put all of your business logic in one place.</p>
+<p>For example, a model file for <code>User</code> would include all the logic for operating on users, and may look something like…</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">export const User = {
+ getAll: () =&gt; { &#x2F;* fetching&#x2F;transform logic for all users *&#x2F; },
+ getById: (id) =&gt; { &#x2F;* fetching&#x2F;transform logic for a single user *&#x2F; },
+ getByGroupId: (id) =&gt; { &#x2F;* fetching&#x2F;transform logic for a group of users *&#x2F; },
+};
+</code></pre>
+<p>In the following example, our schema has multiple ways to request a single user…</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">type Query {
+ user (id: ID!): User
+ article (id: ID!): Article
+}
+
+type Article {
+ author: User
+}
+
+type User {
+ id: ID!
+ name: String!
+}
+</code></pre>
+<p>Rather than having the same fetching logic for a single user in two separate places, it usually makes sense to move that logic to the model file. You may have guessed, with all this talk of model files in an authorization article, that authorization is another great thing to delegate to the model, just like data fetching. You would be right.</p>
+<p><strong>Delegating authorization to models</strong></p>
+<p>You may have noticed that our models also exist on the context, alongside the user object we added earlier. We can add the models to the context in exactly the same way as we did the user.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">context: ({ req }) =&gt; {
+ &#x2F;&#x2F; get the user token from the headers
+ const token = req.headers.authentication || &#39;&#39;;
+  
+ &#x2F;&#x2F; try to retrieve a user with the token
+ const user = getUser(token);
+
+ &#x2F;&#x2F; optionally block the user
+ &#x2F;&#x2F; we could also check user roles&#x2F;permissions here
+ if (!user) throw new AuthorizationError(&#39;you must be logged in to query this schema&#39;);  
+
+ &#x2F;&#x2F; add the user to the context
+ return {
+   user,
+   models: {
+     User: generateUserModel({ user }),
+     ...
+   }
+ };
+},
+</code></pre>
+<p>Starting to generate our models with a function requires a small refactor, that would leave our User model looking something like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">export const generateUserModel = ({ user }) =&gt; ({
+ getAll: () =&gt; { &#x2F;* fetching&#x2F;transform logic for all users *&#x2F; },
+ getById: (id) =&gt; { &#x2F;* fetching&#x2F;transform logic for a single user *&#x2F; },
+ getByGroupId: (id) =&gt; { &#x2F;* fetching&#x2F;transform logic for a group of users *&#x2F; },
+});
+</code></pre>
+<p>Now any model method in <code>User</code> has access to the same <code>user</code> information that resolvers already had, allowing us to refactor the <code>getAll</code> function to do the permissions check directly rather than having to put it in the resolver:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">getAll: () =&gt; {
+ if(!user || !user.roles.includes(&#39;admin&#39;) return null;
+ return fetch(&#39;http:&#x2F;&#x2F;myurl.com&#x2F;users&#39;);
+}
+</code></pre>
+<h2 id="directives-auth">Authorization via Custom Directives</h2>
+
+<p>Another way to go about authorization is via GraphQL Schema Directives. A directive is an identifier preceded by a <code>@</code> character, optionally followed by a list of named arguments, which can appear after almost any form of syntax in the GraphQL query or schema languages.</p>
+<p>Check out this example of an authorization directive:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const typeDefs = `
+  directive @auth(requires: Role = ADMIN) on OBJECT | FIELD_DEFINITION
+
+  enum Role {
+    ADMIN
+    REVIEWER
+    USER
+  }
+
+  type User @auth(requires: USER) {
+    name: String
+    banned: Boolean @auth(requires: ADMIN)
+    canPost: Boolean @auth(requires: REVIEWER)
+  }
+`
+</code></pre>
+<p>The <code>@auth</code> directive can be called directly on the type, or on the fields if you want to limit access to specific fields as shown in the example above. The logic behind authorization is hidden away in the directive implementation. </p>
+<p>One way of implementing the <code>@auth</code> directive is via the <a href="https://www.apollographql.com/docs/graphql-tools/schema-directives.html">SchemaDirectiveVisitor</a> class from <a href="https://github.com/apollographql/graphql-tools" target="_blank" rel="noopener">graphql-tools</a>. Ben Newman covered creating a sample <code>@deprecated</code> and <code>@rest</code> directive in this <a href="https://blog.apollographql.com/reusable-graphql-schema-directives-131fb3a177d1" target="_blank" rel="noopener">excellent article</a>. You can draw inspiration from these examples.</p>
+<h2 id="rest-auth">Authorization outside of GraphQL</h2>
+
+<p>If you’re using a REST API that has built-in authorization, like with an HTTP header, you have one more option. Rather than doing any authentication or authorization work in the GraphQL layer (in resolvers/models), it’s possible to simply pass through the headers or cookies to your REST endpoint and let it do the work.</p>
+<p>Here’s an example:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">&#x2F;&#x2F; src&#x2F;server.js
+context: ({ req }) =&gt; {
+ &#x2F;&#x2F; pass the request information through to the model
+ return {
+   user,
+   models: {
+     User: generateUserModel({ req }),
+     ...
+   }
+ };
+},
+</code></pre>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">&#x2F;&#x2F; src&#x2F;models&#x2F;user.js
+export const generateUserModel = ({ req }) =&gt; ({
+ getAll: () =&gt; {
+   return fetch(&#39;http:&#x2F;&#x2F;myurl.com&#x2F;users&#39;, { headers: req.headers });
+ },
+});
+</code></pre>
+<p>If your REST endpoint is already backed by some form of authorization, this cuts down a lot of the logic that needs to get built in the GraphQL layer. This can be a great option when building a GraphQL API over an existing REST API that has everything you need already built in.</p>
+
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="content-wrapper">
+          
+          
+         
+              <a class="link primary prev" href="creating-directives.html">
+                <span class="icon-arrow-left-alt"></span>
+                <span class="subtitle-pagination">Previous</span>
+                Implementing directives
+              </a>
+         
+          
+          
+           
+              <a class="link primary next" href="testing.html">
+                <span class="subtitle-pagination">Next</span>
+                Integration testing
+                  <span class="icon-arrow-right-alt"></span>
+              </a>
+           
+          
+        </div>
+      </div>
+
+      <div class="github">
+        <a class="link tertiary " href="https://github.com/apollographql/apollo-server/tree/master/docs/source/features/authentication.md" target="_blank">
+          <span class="icon-github"></span>Edit on GitHub</a>
+      </div>
+
+      
+    </div>
+
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/combine/npm/prismjs@1.15.0/components/prism-bash.min.js,npm/prismjs@1.15.0/components/prism-graphql.min.js,npm/prismjs@1.15.0/components/prism-json.min.js,npm/prismjs@1.15.0/components/prism-jsx.min.js,npm/prismjs@1.15.0/components/prism-less.min.js,npm/prismjs@1.15.0/components/prism-swift.min.js,npm/prismjs@1.15.0/components/prism-typescript.min.js,npm/prismjs@1.15.0/components/prism-yaml.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/smooth-scroll@12.1.5/dist/js/smooth-scroll.min.js"></script>
+
+    <script>
+      // Used by the main.js script below.
+      docsConfigRoot = '/docs/apollo-server/';
+    </script>
+    <script src="../script/main.js"></script>
+
+    
+      <script type="text/javascript" src="//cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+    </script>
+
+    
+
+    
+      <script>
+        
+        var analytics;
+
+        <!-- Segment.io -->
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+        analytics.page();
+        }}();
+      </script>
+    
+
+    // search box
+    
+      <script>
+        ['desktop'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: '768e823959d35bbd51e4b2439be13fb7',
+            
+            
+            indexName: 'apollodata',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            },
+            algoliaOptions: {
+              hitsPerPage: 20
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      </script>
+    
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener('load', function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: '#555',
+            },
+            button: {
+              text: '#333',
+              background: '#CCC',
+            },
+          },
+        })
+      });
+    </script>
+  </body>
+</html>

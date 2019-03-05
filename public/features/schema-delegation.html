@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PNFDVBB');</script>
+      <!-- End Google Tag Manager -->
+    
+
+    <!-- Basic -->
+    <title>Schema delegation | Apollo Server</title>
+    <meta name="description" content="Forward queries to other schemas automatically">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <link rel="shortcut icon" type="image/png" href="../images/favicon-apollo.png" sizes="16x16 32x32 64x64">
+    
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.apollographql.com/docs/apollo-server">
+    <meta property="og:title" content="Schema delegation | Apollo Server">
+    <meta property="og:description" content="Forward queries to other schemas automatically">
+    <meta property="og:image" content="">
+    <meta name="twitter:site" content="@apollographql">
+    <meta name="twitter:title" content="Schema delegation | Apollo Server">
+    <meta name="twitter:description" content="Forward queries to other schemas automatically">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="">
+
+    
+    
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic" rel="stylesheet" type="text/css">
+    
+      <link rel="stylesheet" href="../style/bundle-apollo.css">
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  </head>
+  <body class="">
+    
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFDVBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+      
+
+  <div class="nav sunset">
+    <div class="nav-group left">
+      <div class="nav-item mobile-button js-sidebar-toggle show-mobile">
+        <span class="icon-menu"></span>
+      </div>
+      <div class="nav-item">
+        
+        <a class="logo-wrapper" href="https://www.apollographql.com/" title="Apollo ">
+          <img src="../images/logo-apollo-space-left.svg" alt="Apollo" class="logo">
+          
+            <span></span>
+          
+        </a>
+      </div>
+    </div>
+
+
+    
+      <div class="nav-group right">
+        <div id="nav-container" class="show-desktop"></div>
+        <script src="https://apollographql-nav.netlify.com/index.js"></script>
+        <script>ApolloNav.initNav({ theme: 'light' }, 'nav-container')</script>
+      </div>
+    
+    </div>
+  
+
+  
+
+<div class="sidebar charcoal">
+  <div class="panel">
+    
+      <div id="sidebar-panel-nav"></div>
+      <script>ApolloNav.initNav({ theme: 'light', id: 'mobile-nav' }, 'sidebar-panel-nav')</script>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Apollo Server</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v2">2</option>
+            
+              <option value="v1">1</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-area">
+        <div class="input-symbol small round">
+          <input type="text" placeholder="Search Apollo Server" id="desktop-search-input">
+          <span class="icon-search"></span>
+        </div>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+
+        <li>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../." class="sidebar-link ">
+                  <span>Introduction</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../getting-started.html" class="sidebar-link ">
+                  <span>Getting started</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../whats-new.html" class="sidebar-link ">
+                  <span>What's new?</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Essentials</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/schema.html" class="sidebar-link ">
+                  <span>Writing a schema</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/server.html" class="sidebar-link ">
+                  <span>Building a server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/data.html" class="sidebar-link ">
+                  <span>Fetching data with resolvers</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Features</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="mocking.html" class="sidebar-link ">
+                  <span>Mocking</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="errors.html" class="sidebar-link ">
+                  <span>Error handling</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="data-sources.html" class="sidebar-link ">
+                  <span>Data sources</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="subscriptions.html" class="sidebar-link ">
+                  <span>Subscriptions</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="metrics.html" class="sidebar-link ">
+                  <span>Monitoring and metrics</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="graphql-playground.html" class="sidebar-link ">
+                  <span>GraphQL Playground</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="scalars-enums.html" class="sidebar-link ">
+                  <span>Custom scalars and enums</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="unions-interfaces.html" class="sidebar-link ">
+                  <span>Unions and interfaces</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="directives.html" class="sidebar-link ">
+                  <span>Using schema directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="creating-directives.html" class="sidebar-link ">
+                  <span>Implementing directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="authentication.html" class="sidebar-link ">
+                  <span>Authentication</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="testing.html" class="sidebar-link ">
+                  <span>Integration testing</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Deployment</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/heroku.html" class="sidebar-link ">
+                  <span>Heroku</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/lambda.html" class="sidebar-link ">
+                  <span>Lambda</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/now.html" class="sidebar-link ">
+                  <span>Now</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">API Reference</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/apollo-server.html" class="sidebar-link ">
+                  <span>apollo-server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/graphql-tools.html" class="sidebar-link ">
+                  <span>graphql-tools</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Migration</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-two-dot.html" class="sidebar-link ">
+                  <span>Migrating to v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-engine.html" class="sidebar-link ">
+                  <span>Using Engine with v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-file-uploads.html" class="sidebar-link ">
+                  <span>File uploads in Node.js < v8.5.0</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+    </ul>
+  </div>
+</div>
+
+    <div class="content">
+
+      <div class="header-content">
+        <div class="header-wrapper">
+          <div class="title-wrapper">
+            <h1 class="title-page">
+              Schema delegation
+            </h1>
+            
+              <div class="subtitle-page">
+                Forward queries to other schemas automatically
+              </div>
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="document-formatting">
+          <p>Schema delegation is a way to automatically forward a query (or a part of a query) from a parent schema to another schema (called a <em>subschema</em>) that is able to execute the query. Delegation is useful when the parent schema shares a significant part of its data model with the subschema. For example, the parent schema might be powering a GraphQL gateway that connects multiple existing endpoints together, each with its own schema. This kind of architecture could be implemented using schema delegation.</p>
+<p>The <code>graphql-tools</code> package provides several related tools for managing schema delegation:</p>
+<ul>
+<li><a href="./remote-schemas.html">Remote schemas</a> - turning a remote GraphQL endpoint into a local schema</li>
+<li><a href="./schema-transforms.html">Schema transforms</a> - modifying existing schemas to make delegation easier</li>
+<li><a href="./schema-stitching.html">Schema stitching</a> - merging multiple schemas into one</li>
+</ul>
+<p>Delegation is performed by one function, <code>delegateToSchema</code>, called from within a resolver function of the parent schema. The <code>delegateToSchema</code> function sends the query subtree received by the parent resolver to a subschema that knows how to execute it, then returns the result as if the parent resolver had executed the query.</p>
+<h2 id="example">Motivational example</h2>
+
+<p>Let’s consider two schemas, a subschema and a parent schema that reuses parts of a subschema. In this example the parent schema reuses the <em>definitions</em> of the subschema. However the implementations separate should be kept separate, so that the subschema can be tested independently or retrieved from a remote service. The subschema:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Repository {
+  id: ID!
+  url: String
+  issues: [Issue]
+  userId: ID!
+}
+
+type Issue {
+  id: ID!
+  text: String!
+  repository: Repository!
+}
+
+type Query {
+  repositoryById(id: ID!): Repository
+  repositoriesByUserId(id: ID!): [Repository]
+}
+</code></pre>
+<p>Parent Schema:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Repository {
+  id: ID!
+  url: String
+  issues: [Issue]
+  userId: ID!
+  user: User
+}
+
+type Issue {
+  id: ID!
+  text: String!
+  repository: Repository!
+}
+
+type User {
+  id: ID!
+  username: String
+  repositories: [Repository]
+}
+
+type Query {
+  userById(id: ID!): User
+}
+</code></pre>
+<p>Suppose we want the parent schema to delegate retrieval of repositories to the subschema, in order to execute queries such as this one:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">query {
+  userById(id: &quot;1&quot;) {
+    id
+    username
+    repositories {
+      id
+      url
+      user
+      issues {
+        text
+      }
+    }
+  }
+}
+</code></pre>
+<p>The resolver function for the <code>repositories</code> field of the <code>User</code> type would be responsible for the delegation, in this case. While it’s possible to call a remote GraphQL endpoint or resolve the data manually, this would require us to transform the query manually, or always fetch all possible fields, which could lead to overfetching. Delegation automatically extracts the appropriate query to send to the subschema:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql"># To the subschema
+query($id: ID!) {
+  repositoriesByUserId(id: $id) {
+    id
+    url
+    issues {
+      text
+    }
+  }
+}
+</code></pre>
+<p>Delegation also removes the fields that don’t exist on the subschema, such as <code>user</code>. This field would be retrieved from the parent schema using normal GraphQL resolvers.</p>
+<h2 id="delegateToSchema">Example</h2>
+
+<p>The <code>delegateToSchema</code> method can be found on the <code>info.mergeInfo</code> object within any resolver function, and should be called with the following named options:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql"># Subschema
+
+type Booking {
+  id: ID!
+}
+
+type Query {
+  bookingsByUser(userId: ID!, limit: Int): [Booking]
+}
+
+# Schema
+
+type User {
+  id: ID!
+  bookings(limit: Int): [Booking]
+}
+
+type Booking {
+  id: ID!
+}
+</code></pre>
+<p>If we delegate at <code>User.bookings</code> to <code>Query.bookingsByUser</code>, we want to preserve the <code>limit</code> argument and add an <code>userId</code> argument by using the <code>User.id</code>. So the resolver would look like the following:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const resolvers = {
+  User: {
+    bookings: (parent, args, context, info) =&gt; {
+      return info.mergeInfo.delegateToSchema({
+        schema: subschema,
+        operation: &#39;query&#39;,
+        fieldName: &#39;bookingsByUser&#39;,
+        args: {
+          userId: parent.id,
+        },
+        context,
+        info,
+      });
+    },
+  },
+};
+</code></pre>
+<h2 id="considerations">Additional considerations</h2>
+
+<h3 id="Aliases"><a href="#Aliases" class="headerlink" title="Aliases"></a>Aliases</h3><p>Delegation preserves aliases that are passed from the parent query. However that presents problems, because default GraphQL resolvers retrieve field from parent based on their name, not aliases. This way results with aliases will be missing from the delegated result. <code>mergeSchemas</code> and <code>transformSchemas</code> go around that by using <code>src/stitching/defaultMergedResolver</code> for all fields without explicit resolver. When building new libraries around delegation, one should consider how the aliases will be handled.</p>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><p>Under the hood, Apollo Server uses the <code>graphql-tools</code> library, which includes <a href="../api/graphql-tools.html#delegateToSchema"><code>delegateToSchema</code></a> by default.</p>
+
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="content-wrapper">
+          
+          
+          
+           
+              <a class="link primary next" href="../index.html">
+                <span class="subtitle-pagination">Next</span>
+                Introduction
+                  <span class="icon-arrow-right-alt"></span>
+              </a>
+           
+          
+        </div>
+      </div>
+
+      <div class="github">
+        <a class="link tertiary " href="https://github.com/apollographql/apollo-server/tree/master/docs/source/features/schema-delegation.md" target="_blank">
+          <span class="icon-github"></span>Edit on GitHub</a>
+      </div>
+
+      
+    </div>
+
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/combine/npm/prismjs@1.15.0/components/prism-bash.min.js,npm/prismjs@1.15.0/components/prism-graphql.min.js,npm/prismjs@1.15.0/components/prism-json.min.js,npm/prismjs@1.15.0/components/prism-jsx.min.js,npm/prismjs@1.15.0/components/prism-less.min.js,npm/prismjs@1.15.0/components/prism-swift.min.js,npm/prismjs@1.15.0/components/prism-typescript.min.js,npm/prismjs@1.15.0/components/prism-yaml.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/smooth-scroll@12.1.5/dist/js/smooth-scroll.min.js"></script>
+
+    <script>
+      // Used by the main.js script below.
+      docsConfigRoot = '/docs/apollo-server/';
+    </script>
+    <script src="../script/main.js"></script>
+
+    
+      <script type="text/javascript" src="//cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+    </script>
+
+    
+
+    
+      <script>
+        
+        var analytics;
+
+        <!-- Segment.io -->
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+        analytics.page();
+        }}();
+      </script>
+    
+
+    // search box
+    
+      <script>
+        ['desktop'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: '768e823959d35bbd51e4b2439be13fb7',
+            
+            
+            indexName: 'apollodata',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            },
+            algoliaOptions: {
+              hitsPerPage: 20
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      </script>
+    
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener('load', function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: '#555',
+            },
+            button: {
+              text: '#333',
+              background: '#CCC',
+            },
+          },
+        })
+      });
+    </script>
+  </body>
+</html>

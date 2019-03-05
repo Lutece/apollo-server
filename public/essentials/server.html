@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PNFDVBB');</script>
+      <!-- End Google Tag Manager -->
+    
+
+    <!-- Basic -->
+    <title>Building a server | Apollo Server</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <link rel="shortcut icon" type="image/png" href="../images/favicon-apollo.png" sizes="16x16 32x32 64x64">
+    
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.apollographql.com/docs/apollo-server">
+    <meta property="og:title" content="Building a server | Apollo Server">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta name="twitter:site" content="@apollographql">
+    <meta name="twitter:title" content="Building a server | Apollo Server">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="">
+
+    
+    
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic" rel="stylesheet" type="text/css">
+    
+      <link rel="stylesheet" href="../style/bundle-apollo.css">
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  </head>
+  <body class="">
+    
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFDVBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+      
+
+  <div class="nav sunset">
+    <div class="nav-group left">
+      <div class="nav-item mobile-button js-sidebar-toggle show-mobile">
+        <span class="icon-menu"></span>
+      </div>
+      <div class="nav-item">
+        
+        <a class="logo-wrapper" href="https://www.apollographql.com/" title="Apollo ">
+          <img src="../images/logo-apollo-space-left.svg" alt="Apollo" class="logo">
+          
+            <span></span>
+          
+        </a>
+      </div>
+    </div>
+
+
+    
+      <div class="nav-group right">
+        <div id="nav-container" class="show-desktop"></div>
+        <script src="https://apollographql-nav.netlify.com/index.js"></script>
+        <script>ApolloNav.initNav({ theme: 'light' }, 'nav-container')</script>
+      </div>
+    
+    </div>
+  
+
+  
+
+<div class="sidebar charcoal">
+  <div class="panel">
+    
+      <div id="sidebar-panel-nav"></div>
+      <script>ApolloNav.initNav({ theme: 'light', id: 'mobile-nav' }, 'sidebar-panel-nav')</script>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Apollo Server</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v2">2</option>
+            
+              <option value="v1">1</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-area">
+        <div class="input-symbol small round">
+          <input type="text" placeholder="Search Apollo Server" id="desktop-search-input">
+          <span class="icon-search"></span>
+        </div>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+
+        <li>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../." class="sidebar-link ">
+                  <span>Introduction</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../getting-started.html" class="sidebar-link ">
+                  <span>Getting started</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../whats-new.html" class="sidebar-link ">
+                  <span>What's new?</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Essentials</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="schema.html" class="sidebar-link ">
+                  <span>Writing a schema</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc current">
+                <a href="" class="sidebar-link current">
+                  <span>Building a server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="data.html" class="sidebar-link ">
+                  <span>Fetching data with resolvers</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Features</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/mocking.html" class="sidebar-link ">
+                  <span>Mocking</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/errors.html" class="sidebar-link ">
+                  <span>Error handling</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/data-sources.html" class="sidebar-link ">
+                  <span>Data sources</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/subscriptions.html" class="sidebar-link ">
+                  <span>Subscriptions</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/metrics.html" class="sidebar-link ">
+                  <span>Monitoring and metrics</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/graphql-playground.html" class="sidebar-link ">
+                  <span>GraphQL Playground</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/scalars-enums.html" class="sidebar-link ">
+                  <span>Custom scalars and enums</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/unions-interfaces.html" class="sidebar-link ">
+                  <span>Unions and interfaces</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/directives.html" class="sidebar-link ">
+                  <span>Using schema directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/creating-directives.html" class="sidebar-link ">
+                  <span>Implementing directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/authentication.html" class="sidebar-link ">
+                  <span>Authentication</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/testing.html" class="sidebar-link ">
+                  <span>Integration testing</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Deployment</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/heroku.html" class="sidebar-link ">
+                  <span>Heroku</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/lambda.html" class="sidebar-link ">
+                  <span>Lambda</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/now.html" class="sidebar-link ">
+                  <span>Now</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">API Reference</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/apollo-server.html" class="sidebar-link ">
+                  <span>apollo-server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/graphql-tools.html" class="sidebar-link ">
+                  <span>graphql-tools</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Migration</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-two-dot.html" class="sidebar-link ">
+                  <span>Migrating to v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-engine.html" class="sidebar-link ">
+                  <span>Using Engine with v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-file-uploads.html" class="sidebar-link ">
+                  <span>File uploads in Node.js < v8.5.0</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+    </ul>
+  </div>
+</div>
+
+    <div class="content">
+
+      <div class="header-content">
+        <div class="header-wrapper">
+          <div class="title-wrapper">
+            <h1 class="title-page">
+              Building a server
+            </h1>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="document-formatting">
+          <blockquote>
+<p>Estimated time: About 8 minutes.</p>
+</blockquote>
+<p>Apollo Server provides an easy way for new, or existing, applications to get running quickly.  Existing applications can take advantage of middleware and new applications can utilize an integrated web server. Both of these servers can be configured with minimal configuration and follow industry best practices.</p>
+<h2 id="installation">Installation</h2>
+
+<p>We need to install two packages to use Apollo Server, and a third package when using Apollo Server as middleware in an existing application:</p>
+<ul>
+<li><a href="//npm.im/apollo-server"><code>apollo-server</code></a>: The Apollo Server package, which provides most of the functionality.</li>
+<li><a href="//npm.im/graphql"><code>graphql</code></a>: A support library, provided by Facebook.  It won’t be explicitly used in these examples, but is a required module and shared amongst all GraphQL libraries in the project.</li>
+</ul>
+<p>To install, run:</p>
+<pre><code>npm install apollo-server graphql
+</code></pre><p>When adding Apollo Server to an existing application, a corresponding HTTP server support package needs to be installed as well.  For example, for Express this is:</p>
+<pre><code>npm install apollo-server-express graphql
+</code></pre><h2 id="creating">Creating a server</h2>
+
+<p>The fastest way to get started with GraphQL is by creating a new server. Apollo Server will set an Express server up for you as long as you provide it with <code>typeDefs</code>, which is a string representing your GraphQL schema, and <code>resolvers</code>, which is a map of functions that implement your schema.</p>
+<p>In the following examples, we’ll import two things from <code>apollo-server</code>:</p>
+<ul>
+<li>The <code>ApolloServer</code> class, which we’ll use to instantiate and start the server.</li>
+<li>The <code>gql</code> template literal tag, used for writing GraphQL within JavaScript code.</li>
+</ul>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server&#39;);
+
+&#x2F;&#x2F; The GraphQL schema
+const typeDefs = gql`
+  type Query {
+    &quot;A simple type for getting started!&quot;
+    hello: String
+  }
+`;
+
+&#x2F;&#x2F; A map of functions which return data for the schema.
+const resolvers = {
+  Query: {
+    hello: () =&gt; &#39;world&#39;
+  }
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+</code></pre>
+<blockquote>
+<p>See the <a href="../api/apollo-server.html">API Reference</a> for additional options which can be passed to the <code>ApolloServer</code> constructor.</p>
+</blockquote>
+<h2 id="starting">Starting a server</h2>
+
+<p>At this point, we’re ready to start accepting connections to the server.  This is done by calling the <code>listen</code> method on the instance of <code>ApolloServer</code> which was created in the previous step:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<blockquote>
+<p>By default, Apollo Server listens on port 4000.  See the <a href="../api/apollo-server.html">API reference</a> for additional <code>listen</code> options, including how to configure the port.</p>
+</blockquote>
+<h3 id="running">Running the server</h3>
+
+<p>With the above configuration complete, we can now start the Node application, with Apollo Server, for the first time.  This varies, but assuming a standard <code>index.js</code> configuration, might be as simple as <code>node index.js</code>.</p>
+<p>After you start the server it should print a message to the console indicating that it’s ready:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-shell">$ node index.js
+🚀 Server ready at http:&#x2F;&#x2F;localhost:4000&#x2F;
+</code></pre>
+<p>At this point, if the message isn’t printed to the console, it’s possible that something went wrong.  Double-check the previous steps in this guide, and try comparing the configuration to our <a href="https://glitch.com/edit/#!/apollo-launchpad?path=server.js" target="_blank" rel="noopener">pre-configured example on Glitch</a>.</p>
+<h3 id="running">GraphQL Playground</h3>
+
+<p>To explore the newly created GraphQL API, open a browser to the link shown in the console, <code>http://localhost:4000/</code>. Apollo Server sets up GraphQL Playground for you so that you can start running queries and exploring schemas quickly.</p>
+<p>To run a query, copy the following query and then press the “▶️” button:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">query {
+  hello
+}
+</code></pre>
+<p>And the server should return a simple response:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;hello&quot;: &quot;world&quot;
+  }
+}
+</code></pre>
+<blockquote>
+<p>GraphQL operations should <em>also</em> be sent directly to <code>http://localhost:4000/</code> and Apollo Client should be configured with this endpoint.  Only <code>GET</code> requests from a web browser will result the GraphQL Playground interface being served.  Furthermore, by default, GraphQL Playground will only be enabled during development.</p>
+</blockquote>
+<h2 id="integrations">Server integrations</h2>
+
+<p>Depending on whether we are creating a new application or an existing application, the steps will vary slightly since Apollo Server must adapt to the semantics of existing servers (e.g. Express, Hapi, etc.)</p>
+<h3 id="middleware">Middleware</h3>
+
+<p>Existing applications generally already have middleware in place and Apollo Server works along with those middleware. To integrate with Apollo Server, we’ll pass it into the <code>server.applyMiddleware</code> method as <code>app</code> to add the Apollo Server’s middleware.</p>
+<blockquote>
+<p>The existing application is frequently already named <code>app</code>, especially when using Express.  If the application is identified by a different variable, pass the existing variable in place of <code>app</code>.</p>
+</blockquote>
+<p>The following code uses the <code>apollo-server-express</code> package, which can be installed with <code>npm install apollo-server-express</code>.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { ApolloServer, gql } = require(&#39;apollo-server-express&#39;);
+const { typeDefs, resolvers } = require(&#39;.&#x2F;schema&#39;);
+
+const server = new ApolloServer({
+  &#x2F;&#x2F; These will be defined for both new or existing servers
+  typeDefs,
+  resolvers,
+});
+
+server.applyMiddleware({ app }); &#x2F;&#x2F; app is from an existing express app
+
+app.listen({ port: 4000 }, () =&gt;
+  console.log(`🚀 Server ready at http:&#x2F;&#x2F;localhost:4000${server.graphqlPath}`)
+)
+</code></pre>
+<p>Hapi follows the same pattern with <code>apollo-server-express</code> replaced with <code>apollo-server-hapi</code> and <code>app</code> replaced with Hapi server. <code>applyMiddleware</code> registers plugins, so it should be called with <code>await</code>.</p>
+<blockquote>
+<p>When transitioning from <code>apollo-server</code> to an integration package, running <code>npm uninstall apollo-server</code> will remove the extra dependency.</p>
+</blockquote>
+<h3 id="serverless">Serverless</h3>
+
+<p>Apollo Server works great in “serverless” environments such as Amazon Lambda and Microsoft Azure Functions.  These implementations have some extra considerations which won’t be covered in this guide.</p>
+<h3 id="ssl">SSL/TLS Support</h3>
+
+<p>If you require an HTTPS connection to your Apollo Server, you can use the <code>https</code> module with <code>apollo-server-express</code>. Subscriptions can also go through an encrypted WebSocket (WSS)</p>
+<p>Here is an example of using HTTPS in production and HTTP in development, with subscriptions:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-javascript">import express from &#39;express&#39;
+import { ApolloServer } from &#39;apollo-server-express&#39;
+import typeDefs from &#39;.&#x2F;graphql&#x2F;schema&#39;
+import resolvers from &#39;.&#x2F;graphql&#x2F;resolvers&#39;
+import fs from &#39;fs&#39;
+import https from &#39;https&#39;
+import http from &#39;http&#39;
+
+const configurations = {
+  &#x2F;&#x2F; Note: You may need sudo to run on port 443
+  production: { ssl: true, port: 443, hostname: &#39;example.com&#39; },
+  development: { ssl: false, port: 4000, hostname: &#39;localhost&#39; }
+}
+
+const environment = process.env.NODE_ENV || &#39;production&#39;
+const config = configurations[environment]
+
+const apollo = new ApolloServer({ typeDefs, resolvers })
+
+const app = express()
+apollo.applyMiddleware({ app })
+
+&#x2F;&#x2F; Create the HTTPS or HTTP server, per configuration
+var server
+if (config.ssl) {
+  &#x2F;&#x2F; Assumes certificates are in .ssl folder from package root. Make sure the files
+  &#x2F;&#x2F; are secured.
+  server = https.createServer(
+    {
+      key: fs.readFileSync(`.&#x2F;ssl&#x2F;${environment}&#x2F;server.key`),
+      cert: fs.readFileSync(`.&#x2F;ssl&#x2F;${environment}&#x2F;server.crt`)
+    },
+    app
+  )
+} else {
+  server = http.createServer(app)
+}
+
+&#x2F;&#x2F; Add subscription support
+apollo.installSubscriptionHandlers(server)
+
+server.listen({ port: config.port }, () =&gt;
+  console.log(
+    &#39;🚀 Server ready at&#39;,
+    `http${config.ssl ? &#39;s&#39; : &#39;&#39;}:&#x2F;&#x2F;${config.hostname}:${config.port}${apollo.graphqlPath}`
+  )
+)
+</code></pre>
+<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>Now that the GraphQL server is running, it’s time to dive deeper into how we’ll fetch data for our types.  We’ll get started on that in the <a href="./data.html">next step</a>.</p>
+
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="content-wrapper">
+          
+          
+         
+              <a class="link primary prev" href="schema.html">
+                <span class="icon-arrow-left-alt"></span>
+                <span class="subtitle-pagination">Previous</span>
+                Understanding schema concepts
+              </a>
+         
+          
+          
+           
+              <a class="link primary next" href="data.html">
+                <span class="subtitle-pagination">Next</span>
+                Fetching data with resolvers
+                  <span class="icon-arrow-right-alt"></span>
+              </a>
+           
+          
+        </div>
+      </div>
+
+      <div class="github">
+        <a class="link tertiary " href="https://github.com/apollographql/apollo-server/tree/master/docs/source/essentials/server.md" target="_blank">
+          <span class="icon-github"></span>Edit on GitHub</a>
+      </div>
+
+      
+    </div>
+
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/combine/npm/prismjs@1.15.0/components/prism-bash.min.js,npm/prismjs@1.15.0/components/prism-graphql.min.js,npm/prismjs@1.15.0/components/prism-json.min.js,npm/prismjs@1.15.0/components/prism-jsx.min.js,npm/prismjs@1.15.0/components/prism-less.min.js,npm/prismjs@1.15.0/components/prism-swift.min.js,npm/prismjs@1.15.0/components/prism-typescript.min.js,npm/prismjs@1.15.0/components/prism-yaml.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/smooth-scroll@12.1.5/dist/js/smooth-scroll.min.js"></script>
+
+    <script>
+      // Used by the main.js script below.
+      docsConfigRoot = '/docs/apollo-server/';
+    </script>
+    <script src="../script/main.js"></script>
+
+    
+      <script type="text/javascript" src="//cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+    </script>
+
+    
+
+    
+      <script>
+        
+        var analytics;
+
+        <!-- Segment.io -->
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+        analytics.page();
+        }}();
+      </script>
+    
+
+    // search box
+    
+      <script>
+        ['desktop'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: '768e823959d35bbd51e4b2439be13fb7',
+            
+            
+            indexName: 'apollodata',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            },
+            algoliaOptions: {
+              hitsPerPage: 20
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      </script>
+    
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener('load', function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: '#555',
+            },
+            button: {
+              text: '#333',
+              background: '#CCC',
+            },
+          },
+        })
+      });
+    </script>
+  </body>
+</html>

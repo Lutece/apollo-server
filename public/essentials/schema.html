@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PNFDVBB');</script>
+      <!-- End Google Tag Manager -->
+    
+
+    <!-- Basic -->
+    <title>Understanding schema concepts | Apollo Server</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <link rel="shortcut icon" type="image/png" href="../images/favicon-apollo.png" sizes="16x16 32x32 64x64">
+    
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.apollographql.com/docs/apollo-server">
+    <meta property="og:title" content="Understanding schema concepts | Apollo Server">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta name="twitter:site" content="@apollographql">
+    <meta name="twitter:title" content="Understanding schema concepts | Apollo Server">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="">
+
+    
+    
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic" rel="stylesheet" type="text/css">
+    
+      <link rel="stylesheet" href="../style/bundle-apollo.css">
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  </head>
+  <body class="">
+    
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFDVBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+      
+
+  <div class="nav sunset">
+    <div class="nav-group left">
+      <div class="nav-item mobile-button js-sidebar-toggle show-mobile">
+        <span class="icon-menu"></span>
+      </div>
+      <div class="nav-item">
+        
+        <a class="logo-wrapper" href="https://www.apollographql.com/" title="Apollo ">
+          <img src="../images/logo-apollo-space-left.svg" alt="Apollo" class="logo">
+          
+            <span></span>
+          
+        </a>
+      </div>
+    </div>
+
+
+    
+      <div class="nav-group right">
+        <div id="nav-container" class="show-desktop"></div>
+        <script src="https://apollographql-nav.netlify.com/index.js"></script>
+        <script>ApolloNav.initNav({ theme: 'light' }, 'nav-container')</script>
+      </div>
+    
+    </div>
+  
+
+  
+
+<div class="sidebar charcoal">
+  <div class="panel">
+    
+      <div id="sidebar-panel-nav"></div>
+      <script>ApolloNav.initNav({ theme: 'light', id: 'mobile-nav' }, 'sidebar-panel-nav')</script>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Apollo Server</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v2">2</option>
+            
+              <option value="v1">1</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-area">
+        <div class="input-symbol small round">
+          <input type="text" placeholder="Search Apollo Server" id="desktop-search-input">
+          <span class="icon-search"></span>
+        </div>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+
+        <li>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../." class="sidebar-link ">
+                  <span>Introduction</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../getting-started.html" class="sidebar-link ">
+                  <span>Getting started</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../whats-new.html" class="sidebar-link ">
+                  <span>What's new?</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Essentials</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc current">
+                <a href="" class="sidebar-link current">
+                  <span>Writing a schema</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="server.html" class="sidebar-link ">
+                  <span>Building a server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="data.html" class="sidebar-link ">
+                  <span>Fetching data with resolvers</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Features</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/mocking.html" class="sidebar-link ">
+                  <span>Mocking</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/errors.html" class="sidebar-link ">
+                  <span>Error handling</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/data-sources.html" class="sidebar-link ">
+                  <span>Data sources</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/subscriptions.html" class="sidebar-link ">
+                  <span>Subscriptions</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/metrics.html" class="sidebar-link ">
+                  <span>Monitoring and metrics</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/graphql-playground.html" class="sidebar-link ">
+                  <span>GraphQL Playground</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/scalars-enums.html" class="sidebar-link ">
+                  <span>Custom scalars and enums</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/unions-interfaces.html" class="sidebar-link ">
+                  <span>Unions and interfaces</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/directives.html" class="sidebar-link ">
+                  <span>Using schema directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/creating-directives.html" class="sidebar-link ">
+                  <span>Implementing directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/authentication.html" class="sidebar-link ">
+                  <span>Authentication</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../features/testing.html" class="sidebar-link ">
+                  <span>Integration testing</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Deployment</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/heroku.html" class="sidebar-link ">
+                  <span>Heroku</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/lambda.html" class="sidebar-link ">
+                  <span>Lambda</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/now.html" class="sidebar-link ">
+                  <span>Now</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">API Reference</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/apollo-server.html" class="sidebar-link ">
+                  <span>apollo-server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/graphql-tools.html" class="sidebar-link ">
+                  <span>graphql-tools</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Migration</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-two-dot.html" class="sidebar-link ">
+                  <span>Migrating to v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-engine.html" class="sidebar-link ">
+                  <span>Using Engine with v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-file-uploads.html" class="sidebar-link ">
+                  <span>File uploads in Node.js < v8.5.0</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+    </ul>
+  </div>
+</div>
+
+    <div class="content">
+
+      <div class="header-content">
+        <div class="header-wrapper">
+          <div class="title-wrapper">
+            <h1 class="title-page">
+              Understanding schema concepts
+            </h1>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="document-formatting">
+          <blockquote>
+<p>Estimated time: About 10 minutes.</p>
+</blockquote>
+<p>A GraphQL schema is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.</p>
+<p>The core building block within a schema is the “type”.  Types provide a wide-range of functionality within a schema, including the ability to:</p>
+<ul>
+<li>Create relationships between types (e.g. between a <code>Book</code> and an <code>Author</code>).</li>
+<li>Define which data-fetching (querying) and data-manipulation (mutating) operations can be executed by the client.</li>
+<li>If desired, self-explain what capabilities are available to the client (via introspection).</li>
+</ul>
+<p>By the end of this page, we hope to have explained the power of types and how they relate to a GraphQL server.</p>
+<h2 id="sdl">Schema Definition Language</h2>
+
+<p>To make it easy to understand the capabilities of a server, GraphQL implements a human-readable schema syntax known as its Schema Definition Language, or “SDL”.  The SDL is used to express the <em>types</em> available within a schema and how those types relate to each other.</p>
+<p>At first glance the SDL may appear to be similar to JavaScript, but this GraphQL-specific syntax must be stored as a <code>String</code>.  Right now, we’ll focus on explaining SDL and then go into examples of using it within JavaScript later on.</p>
+<p>In a simple example involving books and authors, the SDL might declare:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Book {
+  title: String
+  author: Author
+}
+
+type Author {
+  name: String
+  books: [Book]
+}
+</code></pre>
+<p>It’s important to note that these declarations express the <em>relationships</em> and the <em>shape</em> of the data to return, not where the data comes from or how it might be stored - which will be covered outside the SDL.</p>
+<p>By drawing these logical connections in the schema definition, we can allow the client (which is often a human developer, designing a front-end) to see what data is available and request it in a single optimized query.</p>
+<p>GraphQL clients (such as <a href="/docs/react">Apollo Client</a>) benefit from the precision of GraphQL operations, especially when compared to traditional REST-based approaches, since they can avoid over-fetching and stitching data, which are particularly costly on slow devices or networks.</p>
+<h3 id="scalar">Scalar types</h3>
+
+<p>Scalar types represent the leaves of an operation and always resolve to concrete data. The default scalar types which GraphQL offers are:</p>
+<ul>
+<li><code>Int</code>: Signed 32‐bit integer</li>
+<li><code>Float</code>: Signed double-precision floating-point value</li>
+<li><code>String</code>: UTF‐8 character sequence</li>
+<li><code>Boolean</code>: true or false</li>
+<li><code>ID</code> (serialized as <code>String</code>): A unique identifier, often used to refetch an object or as the key for a cache. While serialized as a String, ID signifies that it is not intended to be human‐readable</li>
+</ul>
+<p>These primitive types cover a majority of use cases. For other use cases, we can create <a href="../features/scalars-enums.html">custom scalar types</a>.</p>
+<h3 id="object">Object types</h3>
+
+<p>The object type is the most common type used in a schema and represents a group of fields. Each field inside of an object type maps to another type, allowing nested types and circular references.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type TypeName {
+  fieldA: String
+  fieldB: Boolean
+  fieldC: Int
+  fieldD: CustomType
+}
+
+type CustomType {
+  circular: TypeName
+}
+</code></pre>
+<h3 id="query">The Query type</h3>
+
+<p>A GraphQL query is for <em>fetching</em> data and compares to the <code>GET</code> verb in REST-based APIs.</p>
+<p>In order to define what queries are possible on a server, the <code>Query</code> type is used within the SDL.  The <code>Query</code> type is one of many root-level types which defines functionality (it doesn’t actually trigger a query) for clients and acts as an entry-point to other more specific types within the schema.</p>
+<p>Using the books and author example we created in the SDL example of the last section, we can define multiple independent queries which are available on a server:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Query {
+  getBooks: [Book]
+  getAuthors: [Author]
+}
+</code></pre>
+<p>In this <code>Query</code> type, we define two types of queries which are available on this GraphQL server:</p>
+<ul>
+<li><code>getBooks</code>: which returns a list of <code>Book</code> objects.</li>
+<li><code>getAuthors</code>: which returns a list of <code>Author</code> objects.</li>
+</ul>
+<p>Those familiar with REST-based APIs would normally find these located on separate end-points (e.g. <code>/api/books</code> and <code>/api/authors</code>), but GraphQL allows them to be queried at the same time and returned at once.</p>
+<p>As mentioned in the previous section, the structure in which types are organized in the SDL is important because of the relationships it creates.  When a client makes a query to the server, the server will return results in a shape that matches that of the query.</p>
+<p>Based on the SDL defined above, a client could request a list of all books <em>and</em> a separate list of all authors by sending a single <code>query</code> with exactly what it wishes to receive in return:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">query {
+  getBooks {
+    title
+  }
+
+  getAuthors {
+    name
+  }
+}
+</code></pre>
+<p>Which would return data to the client as:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;getBooks&quot;: [
+      {
+        &quot;title&quot;: &quot;...&quot;
+      },
+      ...
+    ],
+    &quot;getAuthors&quot;: [
+      {
+        &quot;name&quot;: &quot;...&quot;
+      },
+      ...
+    ]
+  }
+}
+</code></pre>
+<p>While having two separate lists&mdash;a list of books and a list of authors&mdash;might be useful for some purposes, a separate desire might be to display a single list of books which includes the author for each book.</p>
+<p>Thanks to the relationship between <code>Book</code> and <code>Author</code>, which is defined in the SDL above, such a <code>query</code> could be expressed as:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">query {
+  getBooks {
+    title
+    author {
+      name
+    }
+  }
+}
+</code></pre>
+<p>And, without additional effort on its part, the client would receive the information in the same shape as the request:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;getBooks&quot;: [
+      {
+        &quot;title&quot;: &quot;...&quot;
+        &quot;author&quot;: {
+          &quot;name&quot;: &quot;...&quot;
+        }
+      },
+      ...
+    ]
+  }
+}
+</code></pre>
+<h3 id="mutation">The Mutation type</h3>
+
+<p>Mutations are operations sent to the server to create, update or delete data.  These are comparable to the <code>PUT</code>, <code>POST</code>, <code>PATCH</code> and <code>DELETE</code> verbs on REST-based APIs.</p>
+<p>Much like how the <code>Query</code> type defines the entry-points for data-fetching operations on a GraphQL server, the root-level <code>Mutation</code> type specifies the entry points for data-manipulation operations.</p>
+<p>For example, when imagining a situation where the API supported adding a new <code>Book</code>, the SDL might implement the following <code>Mutation</code> type:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Mutation {
+  addBook(title: String, author: String): Book
+}
+</code></pre>
+<p>This implements a single <code>addBook</code> mutation which accepts <code>title</code> and <code>author</code> as arguments (both <code>String</code> types).  We’ll go further into arguments (also known as “input types”) in <a href="../schemas/types.html">types</a>, but the important thing to note here is that this mutation will return the newly-created <code>Book</code> object.</p>
+<p>The <code>Book</code> object will match the previously-created <code>Book</code> type (from above) and, much like the <code>Query</code> type, we specify the fields to include in the return object when sending the <code>mutation</code>:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">mutation {
+  addBook(title: &quot;Fox in Socks&quot;, author: &quot;Dr. Seuss&quot;) {
+    title
+    author {
+      name
+    }
+  }
+}
+</code></pre>
+<p>In the above example, we’ve requested the book’s <code>title</code> along with the <code>name</code> of the <code>author</code>.  The result returned from this mutation would be:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;addBook&quot;: {
+      {
+        &quot;title&quot;: &quot;Fox in Socks&quot;,
+        &quot;author&quot;: {
+          &quot;name&quot;: &quot;Dr. Seuss&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>Multiple mutations may be sent in the same request, however they will be executed in the order they are provided (in series), in order to avoid race-conditions within the operation.</p>
+<h2 id="documentation">Documenting your schema</h2>
+
+<h3 id="comments">Describing types</h3>
+
+<p>GraphQL supports providing markdown-enabled descriptions within the schema, which makes it easy for consumers of the API to discover a field and how to use it.</p>
+<p>For example, the following type definition shows how to use both single-line string literals, as well as multi-line blocks.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">&quot;Description for the type&quot;
+type MyObjectType {
+  &quot;&quot;&quot;
+  Description for field
+  Supports **multi-line** description for your [API](http:&#x2F;&#x2F;example.com)!
+  &quot;&quot;&quot;
+  myField: String!
+
+  otherField(
+    &quot;Description for argument&quot;
+    arg: Int
+  )
+}
+</code></pre>
+<p>This makes SDL-generation even easier since many GraphQL tools (like GraphQL Playground) auto-complete field names, along with the descriptions, when available.</p>
+<h3 id="introspection">Introspection</h3>
+
+<p>Introspection is an <strong>optional</strong> feature, enabled by default during development, which allows clients (which are frequently developers, building an application) to automatically discover the types implemented within a GraphQL schema.</p>
+<p>By allowing the consumer of the API to view the full possibilities of the API, developers can easily write new queries, or add new fields to existing ones.</p>
+<p>One of the main aspects of GraphQL is that it allows you to describe the space of data available in your system with a strongly typed schema. While GraphQL makes it possible to evolve your API over time without breaking your clients, it’s always easier if you think about some schema design decisions up front to reduce the amount of refactoring you need to do later.</p>
+<p>This article details some practices around schema design which will help you design a great GraphQL API to stand the test of time.</p>
+<h2 id="style">Style conventions</h2>
+
+<p>The GraphQL specification is flexible and doesn’t impose specific naming guidelines. However, in order to facilitate development and continuity across GraphQL deployments, it’s useful to have a general set of conventions. We suggest the following:</p>
+<ul>
+<li><strong>Fields</strong> should be named in <code>camelCase</code>, since the majority of consumers will be client applications written in JavaScript, Java, Kotlin, or Swift, all of which recommend <code>camelCase</code> for variable names.</li>
+<li><strong>Types</strong>: should be <code>PascalCase</code>, to match how classes are defined in the languages above.</li>
+<li><strong>Enums</strong>: should have their type name in <code>PascalCase</code>, and their value names in <code>ALL_CAPS</code>, since they are similar to constants.</li>
+</ul>
+<p>If you use the conventions above, you won’t need to have any extra logic in your clients to convert names to match the conventions of these languages.</p>
+<h2 id="design-for-client">Design for client needs</h2>
+
+<p>GraphQL schemas are at their best when they are designed around the needs of client applications.  When a team is building their first GraphQL schema, they might be tempted to create literal mappings on top of existing database collections or tables using CRUD-like root fields. While this literal database-to-schema mapping may be a fast way to get up and running, we strongly suggest avoiding it and instead building the schema based on how the GraphQL API will be used by the front-end.</p>
+<p>If a database has fields or relationships that the client doesn’t yet need, don’t include them in the schema up front. Adding fields later is much easier than removing them, so add fields to your API as your clients need them rather than exposing all of the possible data up front. This is especially useful because GraphQL allows you to create associations between your data that don’t exist in the underlying data, enabling you to move complex data manipulation logic out of your clients.</p>
+<p>For example, let’s say you want to create a view that lists some events, their locations, and the weather at that location. In that case, you might want to do a query like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">query EventList {
+  upcomingEvents {
+    name
+    date
+    location {
+      name
+      weather {
+        temperature
+        description
+      }
+    }
+  }
+}
+</code></pre>
+<p>The desire to display this data could inform the design of a schema like the following:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Query {
+  upcomingEvents: [Event]
+  # Other fields, etc
+}
+
+type Event {
+  name: String
+  date: String
+  location: Location
+}
+
+type Location {
+  name: String
+  weather: WeatherInfo
+}
+
+type WeatherInfo {
+  temperature: Float
+  description: String
+}
+</code></pre>
+<p>This doesn’t necessarily need to match the data returned from a single REST endpoint or database. For example, if you have a REST endpoint exposing a list of events and their locations, but not weather information, you would just need to fetch the weather information from a second endpoint (or even a 3rd party API) in your resolvers. This way, you can design a schema that will allow your frontend to be as simple as possible, without limiting yourself to the exact shape of data that’s in your underlying data sources.</p>
+<h2 id="mutations">Designing mutations</h2>
+
+<p>The <code>Mutation</code> type is a core type in GraphQL which specializes in <em>modifying</em> data, which contrasts the <code>Query</code> type used for <em>fetching</em> data.</p>
+<p>Unlike REST, where the behavior can be more ad-hoc, the <code>Mutation</code> type is designed with the expectation that there will be a response object.  This ensures that the client receives the most current data without a subsequent round-trip re-query.</p>
+<p>A mutation for updating the age of a <code>User</code> might look like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Mutation {
+  updateUserAge(id: ID!, age: Int!): User
+}
+
+type User {
+  id: ID!
+  name: String!
+  age: Int!
+}
+</code></pre>
+<p>With this definition, the following mutation becomes possible:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">mutation updateMyUser {
+  updateUserAge(id: 1, age: 25){
+    id
+    age
+    name
+  }
+}
+</code></pre>
+<p>Once executed by the server, the response returned to the client might be:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;updateUserAge&quot;: {
+      &quot;id&quot;: &quot;1&quot;,
+      &quot;age&quot;: &quot;25&quot;,
+      &quot;name&quot;: &quot;Jane Doe&quot;
+    }
+  }
+}
+</code></pre>
+<p>While it’s not mandatory to return the object which has been updated, the inclusion of the updated information allows the client to confidently update its local state without performing additional requests.</p>
+<p>As with queries, it’s best to design mutations with the client in mind and in response to a user’s action.  In simple cases, this might only result in changes to a single document, however in many cases there will be updates to multiple documents from different resources, for example, a <code>likePost</code> mutation might update the total likes for a user as well as their post.</p>
+<p>In order to provide a consistent shape of response data, we recommend adopting a pattern which returns a standardized response format which supports returning any number of documents from each resource which was modified.  We’ll outline a recommended pattern for this in the next section.</p>
+<h3 id="mutation-responses">Responses</h3>
+
+<p>GraphQL mutations can return any information the developer wishes, but designing mutation responses in a consistent and robust structure makes them more approachable by humans and less complicated to traverse in client code.  There are two guiding principles which we have combined into our suggested mutation response structure.</p>
+<p>First, while mutations might only modify a single resource type, they often need to touch several at a time.  It makes sense for this to happen in a single round-trip to the server and this is one of the strengths of GraphQL!  When different resources are modified, the client code can benefit from having updated fields returned from each type and the response format should support that.</p>
+<p>Secondly, mutations have a higher chance of causing errors than queries since they are modifying data.  If only a portion of a mutation update succeeds, whether that is a partial update to a single document’s fields or a failed update to an entire document, it’s important to convey that information to the client to avoid stale local state on the client.</p>
+<p>A common way to handle errors during a mutation is to simply <code>throw</code> an error.  While that’s fine, throwing an error in a resolver will return an error for the entire operation to the caller and prevent a more meaningful response.  Consider the following mutation example, which tries to update a user’s <code>name</code> and <code>age</code>:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">mutation updateUser {
+  updateUser(id: 1, user: { age: -1, name: &quot;Foo Bar&quot; }){
+    name
+    age
+  }
+}
+</code></pre>
+<p>With validation in place, this mutation might cause an error since the <code>age</code> is a negative value.  While it’s possible that the entire operation should be stopped, there’s an opportunity to partially update the user’s record with the new <code>name</code> and return the updated record with the <code>age</code> left untouched.</p>
+<p>Fortunately, the powerful structure of GraphQL mutations accommodates this use case and can return transactional information about the update alongside the records which have been changed which enables client-side updates to occur automatically.</p>
+<p>In order to provide consistency across a schema, we suggest introducing a <code>MutationResponse</code> interface which can be implemented on every mutation response in a schema and enables transactional information to be returned in addition to the normal mutation response object.</p>
+<p>A <code>MutationResponse</code> interface would look like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">interface MutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+}
+</code></pre>
+<p>An implementing type would look like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type UpdateUserMutationResponse implements MutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  user: User
+}
+</code></pre>
+<p>Calling a mutation that returns that <code>UpdateUserMutationResponse</code> type would result in a response that looks something like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;updateUser&quot;: {
+      &quot;code&quot;: &quot;200&quot;,
+      &quot;success&quot;: true,
+      &quot;message&quot;: &quot;User was successfully updated&quot;,
+      &quot;user&quot;: {
+        &quot;id&quot;: &quot;1&quot;,
+        &quot;name&quot;: &quot;Jane Doe&quot;,
+        &quot;age&quot;: 35
+      }
+    }
+  }
+}
+</code></pre>
+<p>Let’s break this down, field by field:</p>
+<ul>
+<li><code>code</code> is a string representing a transactional value explaining details about the status of the data change. Think of this like an HTTP status code.</li>
+<li><code>success</code> is a boolean indicating whether the update was successful or not. This allows a coarse check by the client to know if there were failures.</li>
+<li><code>message</code> is a string that is meant to be a human-readable description of the status of the transaction. It is intended to be used in the UI of the product.</li>
+<li><code>user</code> is added by the implementing type <code>UpdateUserMutationResponse</code> to return back the newly created user for the client to use!</li>
+</ul>
+<p>For mutations which have touched multiple types, this same structure can be used to return updated objects from each one.  For example, a <code>likePost</code> type, which could affect a user’s “reputation” and also update the post itself, might implement <code>MutationResponse</code> in the following manner:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type LikePostMutationResponse implements MutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  post: Post
+  user: User
+}
+</code></pre>
+<p>In this response type, we’ve provided the expectation that both the <code>user</code> and the <code>post</code> would be returned and an actual response to a <code>likePost</code> mutation could be:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;likePost&quot;: {
+      &quot;code&quot;: &quot;200&quot;,
+      &quot;success&quot;: true,
+      &quot;message&quot;: &quot;Thanks!&quot;,
+      &quot;post&quot;: {
+        &quot;likes&quot;: 5040
+      },
+      &quot;user&quot;: {
+        &quot;reputation&quot;: 11
+      }
+    }
+  }
+}
+</code></pre>
+<p>Following this pattern for mutations provides detailed information about the data that has changed and feedback on whether the operation was successful or not.  Armed with this information, developers can easily react to failures within the client</p>
+<h3 id="mutation-input-types">Input types</h3>
+
+<p>Input types are a special type in GraphQL which allows an object to be passed as an argument to both queries and mutations and is helpful when simple scalar types aren’t sufficient.</p>
+<p>This allows arguments to be structured in an more manageable way, similar to how switching to an <code>options</code> argument might be appreciated when <code>function</code> arguments become too iterative.</p>
+<p>For example, consider this mutation which creates a post along with its accompanying media URLs (e.g. images):</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Mutation {
+  createPost(title: String, body: String, mediaUrls: [String]): Post
+}
+</code></pre>
+<p>This could be easier to digest, and the arguments would be easier to re-use within the mutation, by using an <code>input</code> type with the relevant fields.</p>
+<p>An input type is defined like a normal object type but using the <code>input</code> keyword.  To introduce an <code>input</code> type for this example, we’d do:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Mutation {
+  createPost(post: PostAndMediaInput): Post
+}
+
+input PostAndMediaInput {
+  title: String
+  body: String
+  mediaUrls: [String]
+}
+</code></pre>
+<p>Not only does this facilitate passing the <code>PostAndMediaInput</code> around within the schema, it also provides a basis for annotating fields with descriptions which are automatically exposed by GraphQL-enabled tools:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">input PostAndMediaInput {
+  &quot;A main title for the post&quot;
+  title: String
+  &quot;The textual body of the post.&quot;
+  body: String
+  &quot;A list of URLs to render in the post.&quot;
+  mediaUrls: [String]
+}
+</code></pre>
+<p>Input types can also be used when different operations require the exact same information, though we urge caution on over-using this technique since changes to <code>input</code> types are breaking changes for all operations which utilize them.</p>
+<p>Additionally, while it is possible to reuse an <code>input</code> type between a query and mutation which target the same resource, it’s often best to avoid this since in many cases certain null fields might be tolerated for one but not the other.</p>
+<h2 id="next-steps">Next steps</h2>
+
+<p>At this point, we hope to have explained the basic information necessary to understand a GraphQL schema.</p>
+<p>In the <a href="./server.html">next step</a>, we’ll show how to start implementing a simple GraphQL server.</p>
+
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="content-wrapper">
+          
+          
+         
+              <a class="link primary prev" href="../whats-new.html">
+                <span class="icon-arrow-left-alt"></span>
+                <span class="subtitle-pagination">Previous</span>
+                What's new?
+              </a>
+         
+          
+          
+           
+              <a class="link primary next" href="server.html">
+                <span class="subtitle-pagination">Next</span>
+                Building a server
+                  <span class="icon-arrow-right-alt"></span>
+              </a>
+           
+          
+        </div>
+      </div>
+
+      <div class="github">
+        <a class="link tertiary " href="https://github.com/apollographql/apollo-server/tree/master/docs/source/essentials/schema.md" target="_blank">
+          <span class="icon-github"></span>Edit on GitHub</a>
+      </div>
+
+      
+    </div>
+
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/combine/npm/prismjs@1.15.0/components/prism-bash.min.js,npm/prismjs@1.15.0/components/prism-graphql.min.js,npm/prismjs@1.15.0/components/prism-json.min.js,npm/prismjs@1.15.0/components/prism-jsx.min.js,npm/prismjs@1.15.0/components/prism-less.min.js,npm/prismjs@1.15.0/components/prism-swift.min.js,npm/prismjs@1.15.0/components/prism-typescript.min.js,npm/prismjs@1.15.0/components/prism-yaml.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/smooth-scroll@12.1.5/dist/js/smooth-scroll.min.js"></script>
+
+    <script>
+      // Used by the main.js script below.
+      docsConfigRoot = '/docs/apollo-server/';
+    </script>
+    <script src="../script/main.js"></script>
+
+    
+      <script type="text/javascript" src="//cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+    </script>
+
+    
+
+    
+      <script>
+        
+        var analytics;
+
+        <!-- Segment.io -->
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+        analytics.page();
+        }}();
+      </script>
+    
+
+    // search box
+    
+      <script>
+        ['desktop'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: '768e823959d35bbd51e4b2439be13fb7',
+            
+            
+            indexName: 'apollodata',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            },
+            algoliaOptions: {
+              hitsPerPage: 20
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      </script>
+    
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener('load', function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: '#555',
+            },
+            button: {
+              text: '#333',
+              background: '#CCC',
+            },
+          },
+        })
+      });
+    </script>
+  </body>
+</html>

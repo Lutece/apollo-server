@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PNFDVBB');</script>
+      <!-- End Google Tag Manager -->
+    
+
+    <!-- Basic -->
+    <title>Schema stitching | Apollo Server</title>
+    <meta name="description" content="Combining multiple GraphQL APIs into one">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <link rel="shortcut icon" type="image/png" href="../images/favicon-apollo.png" sizes="16x16 32x32 64x64">
+    
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.apollographql.com/docs/apollo-server">
+    <meta property="og:title" content="Schema stitching | Apollo Server">
+    <meta property="og:description" content="Combining multiple GraphQL APIs into one">
+    <meta property="og:image" content="">
+    <meta name="twitter:site" content="@apollographql">
+    <meta name="twitter:title" content="Schema stitching | Apollo Server">
+    <meta name="twitter:description" content="Combining multiple GraphQL APIs into one">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="">
+
+    
+    
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic" rel="stylesheet" type="text/css">
+    
+      <link rel="stylesheet" href="../style/bundle-apollo.css">
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  </head>
+  <body class="">
+    
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFDVBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+      
+
+  <div class="nav sunset">
+    <div class="nav-group left">
+      <div class="nav-item mobile-button js-sidebar-toggle show-mobile">
+        <span class="icon-menu"></span>
+      </div>
+      <div class="nav-item">
+        
+        <a class="logo-wrapper" href="https://www.apollographql.com/" title="Apollo ">
+          <img src="../images/logo-apollo-space-left.svg" alt="Apollo" class="logo">
+          
+            <span></span>
+          
+        </a>
+      </div>
+    </div>
+
+
+    
+      <div class="nav-group right">
+        <div id="nav-container" class="show-desktop"></div>
+        <script src="https://apollographql-nav.netlify.com/index.js"></script>
+        <script>ApolloNav.initNav({ theme: 'light' }, 'nav-container')</script>
+      </div>
+    
+    </div>
+  
+
+  
+
+<div class="sidebar charcoal">
+  <div class="panel">
+    
+      <div id="sidebar-panel-nav"></div>
+      <script>ApolloNav.initNav({ theme: 'light', id: 'mobile-nav' }, 'sidebar-panel-nav')</script>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Apollo Server</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v2">2</option>
+            
+              <option value="v1">1</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-area">
+        <div class="input-symbol small round">
+          <input type="text" placeholder="Search Apollo Server" id="desktop-search-input">
+          <span class="icon-search"></span>
+        </div>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+
+        <li>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../." class="sidebar-link ">
+                  <span>Introduction</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../getting-started.html" class="sidebar-link ">
+                  <span>Getting started</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../whats-new.html" class="sidebar-link ">
+                  <span>What's new?</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Essentials</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/schema.html" class="sidebar-link ">
+                  <span>Writing a schema</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/server.html" class="sidebar-link ">
+                  <span>Building a server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../essentials/data.html" class="sidebar-link ">
+                  <span>Fetching data with resolvers</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Features</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="mocking.html" class="sidebar-link ">
+                  <span>Mocking</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="errors.html" class="sidebar-link ">
+                  <span>Error handling</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="data-sources.html" class="sidebar-link ">
+                  <span>Data sources</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="subscriptions.html" class="sidebar-link ">
+                  <span>Subscriptions</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="metrics.html" class="sidebar-link ">
+                  <span>Monitoring and metrics</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="graphql-playground.html" class="sidebar-link ">
+                  <span>GraphQL Playground</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="scalars-enums.html" class="sidebar-link ">
+                  <span>Custom scalars and enums</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="unions-interfaces.html" class="sidebar-link ">
+                  <span>Unions and interfaces</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="directives.html" class="sidebar-link ">
+                  <span>Using schema directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="creating-directives.html" class="sidebar-link ">
+                  <span>Implementing directives</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="authentication.html" class="sidebar-link ">
+                  <span>Authentication</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="testing.html" class="sidebar-link ">
+                  <span>Integration testing</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Deployment</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/heroku.html" class="sidebar-link ">
+                  <span>Heroku</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/lambda.html" class="sidebar-link ">
+                  <span>Lambda</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../deployment/now.html" class="sidebar-link ">
+                  <span>Now</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">API Reference</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/apollo-server.html" class="sidebar-link ">
+                  <span>apollo-server</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../api/graphql-tools.html" class="sidebar-link ">
+                  <span>graphql-tools</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+
+        <li>
+          
+            <div class="heading-toc">Migration</div>
+          
+
+          <ul class="list-toc">
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-two-dot.html" class="sidebar-link ">
+                  <span>Migrating to v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-engine.html" class="sidebar-link ">
+                  <span>Using Engine with v2.0</span>
+                </a>
+              </li>
+              
+            
+              
+              
+              <li class="item-toc ">
+                <a href="../migration-file-uploads.html" class="sidebar-link ">
+                  <span>File uploads in Node.js < v8.5.0</span>
+                </a>
+              </li>
+              
+            
+          </ul>
+        </li>
+
+        <hr>
+      
+    </ul>
+  </div>
+</div>
+
+    <div class="content">
+
+      <div class="header-content">
+        <div class="header-wrapper">
+          <div class="title-wrapper">
+            <h1 class="title-page">
+              Schema stitching
+            </h1>
+            
+              <div class="subtitle-page">
+                Combining multiple GraphQL APIs into one
+              </div>
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="document-formatting">
+          <p>Schema stitching is the process of creating a single GraphQL schema from multiple underlying GraphQL APIs.</p>
+<p>One of the main benefits of GraphQL is that we can query all of our data as part of one schema, and get everything we need in one request. But as the schema grows, it might become cumbersome to manage it all as one codebase and deploy everything at once. At that point, you may want to decompose your schema into separate microservices, which can be developed and deployed independently.</p>
+<p>That’s exactly what schema stitching is for. We can create references to all of the remote GraphQL APIs we want to use, and pass them into the  <code>mergeSchemas</code> function to create a single API.</p>
+<h2 id="remote-schemas" title="Remote schemas">Working with remote schemas</h2>
+
+<p>While you can use stitching to combine local schema objects, schema stitching is most useful when you use it to combine multiple GraphQL APIs that run as separate services. To do this, we first need to make a GraphQL schema object for each remote API we want to stitch together.</p>
+<p>There are three steps to create a remote schema:</p>
+<ol>
+<li>Create an <a href="#link">Apollo Link</a> that can retrieve results from that schema</li>
+<li>Use <a href="#introspectSchema"><code>introspectSchema</code></a> to get the schema of the remote server</li>
+<li>Use <a href="#makeRemoteExecutableSchema"><code>makeRemoteExecutableSchema</code></a> to create a schema that uses the link to delegate requests to the underlying service</li>
+</ol>
+<p>We’ve chosen to split this functionality up to give you the flexibility to choose when to do the introspection step. For example, you might already have the remote schema information, allowing you to skip the <code>introspectSchema</code> step entirely. Here’s a complete example:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { HttpLink } = require(&#39;apollo-link-http&#39;);
+const fetch = require(&#39;node-fetch&#39;);
+const { introspectSchema, makeRemoteExecutableSchema } = require(&#39;apollo-server&#39;);
+
+const link = new HttpLink({ uri: &#39;http:&#x2F;&#x2F;api.githunt.com&#x2F;graphql&#39;, fetch });
+
+const schema = await introspectSchema(link);
+
+const executableSchema = makeRemoteExecutableSchema({
+  schema,
+  link,
+});
+</code></pre>
+<p>Now, let’s break down some of the details.</p>
+<h3 id="create-link" title="Creating a link">
+  Creating a Link
+</h3>
+
+<p>A Link is a function capable of retrieving GraphQL results. It’s the same network layer that Apollo Client uses to handle fetching data. Apollo Link brings with it a large feature set for common use cases. For instance, adding error handling to your request is super easy using the <code>apollo-link-error</code> package. You can set headers, batch requests, and even configure your app to retry on failed attempts all by including new links into your request chain.</p>
+<p>Here’s the basic setup:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const HttpLink = require(&#39;apollo-link-http&#39;);
+const fetch = require(&#39;node-fetch&#39;);
+
+const link = new HttpLink({ uri: &#39;http:&#x2F;&#x2F;api.githunt.com&#x2F;graphql&#39;, fetch });
+</code></pre>
+<h3 id="graphqlContext">GraphQL context</h3>
+
+<p>In GraphQL execution, <code>context</code> is often used to pass around information about authentication or other secrets. If you need these inside your Link to call the underlying API, it’s easy to pass them through, since they will be included on the <code>graphqlContext</code> field.</p>
+<p>For example, to add authentication headers, modify the link to include an authentication header:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const { setContext } = require(&#39;apollo-link-context&#39;);
+const { HttpLink } = require(&#39;apollo-link-http&#39;);
+
+const http = new HttpLink({ uri: &#39;http:&#x2F;&#x2F;api.githunt.com&#x2F;graphql&#39;, fetch });
+
+const link = setContext((request, previousContext) =&gt; ({
+  headers: {
+    &#39;Authentication&#39;: `Bearer ${previousContext.graphqlContext.authKey}`,
+  }
+})).concat(http);
+</code></pre>
+<p>If you need further details about how to control your requests, read the full details in the <a href="https://www.apollographql.com/docs/link/">Apollo Link docs</a>.</p>
+<h2 id="basic-example">Basic example</h2>
+
+<p>In this example we’ll stitch together two very simple schemas. It doesn’t matter whether these are local or proxies created with <code>makeRemoteExecutableSchema</code>, because the merging itself would be the same.</p>
+<p>In this case, we’re dealing with two schemas that implement a system with users and “chirps”&mdash;small snippets of text that users can post.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const {
+  makeExecutableSchema,
+  addMockFunctionsToSchema,
+  mergeSchemas,
+  ApolloServer,
+  gql,
+} = require(&#39;apollo-server&#39;);
+
+&#x2F;&#x2F; Mocked chirp schema
+&#x2F;&#x2F; We don&#39;t worry about the schema implementation right now since we&#39;re just
+&#x2F;&#x2F; demonstrating schema stitching.
+const chirpSchema = makeExecutableSchema({
+  typeDefs: gql`
+    type Chirp {
+      id: ID!
+      text: String
+      authorId: ID!
+    }
+
+    type Query {
+      chirpById(id: ID!): Chirp
+      chirpsByAuthorId(authorId: ID!): [Chirp]
+    }
+  `
+});
+
+addMockFunctionsToSchema({ schema: chirpSchema });
+
+&#x2F;&#x2F; Mocked author schema
+const authorSchema = makeExecutableSchema({
+  typeDefs: gql`
+    type User {
+      id: ID!
+      email: String
+    }
+
+    type Query {
+      userById(id: ID!): User
+    }
+  `
+});
+
+addMockFunctionsToSchema({ schema: authorSchema });
+
+const server = new ApolloServer({ schema });
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<p>This gives us a new schema with the root fields on <code>Query</code> from both schemas (along with the <code>User</code> and <code>Chirp</code> types):</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-graphql">type Query {
+  chirpById(id: ID!): Chirp
+  chirpsByAuthorId(authorId: ID!): [Chirp]
+  userById(id: ID!): User
+}
+</code></pre>
+<p>We now have a single schema that supports asking for <code>userById</code> and <code>chirpsByAuthorId</code> in the same query!</p>
+<h3 id="adding-resolvers">Adding resolvers between schemas</h3>
+
+<p>Combining existing root fields is a great start, but in practice we will often want to introduce additional fields for working with the relationships between types that came from different subschemas. For example, we might want to go from a particular user to their chirps, or from a chirp to its author. Or we might want to query a <code>latestChirps</code> field and then get the author of each of those chirps. If the only way to obtain a chirp’s author is to call the <code>userById(id)</code> root query field with the <code>authorId</code> of a given chirp, and we don’t know the chirp’s <code>authorId</code> until we receive the GraphQL response, then we won’t be able to obtain the authors as part of the same query.</p>
+<p>To add this ability to navigate between types, we need to <em>extend</em> existing types with new fields that translate between the types:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const linkTypeDefs = `
+  extend type User {
+    chirps: [Chirp]
+  }
+
+  extend type Chirp {
+    author: User
+  }
+`;
+</code></pre>
+<p>We can now merge these three schemas together:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">mergeSchemas({
+  schemas: [
+    chirpSchema,
+    authorSchema,
+    linkTypeDefs,
+  ],
+});
+</code></pre>
+<p>We won’t be able to query <code>User.chirps</code> or <code>Chirp.author</code> yet, however, because we still need to define resolvers for these new fields.</p>
+<p>How should these resolvers be implemented? When we resolve <code>User.chirps</code> or <code>Chirp.author</code>, we want to <em>delegate</em> to the relevant root fields. To get from a user to the user’s chirps, for example, we’ll want to use the <code>id</code> of the user to call <code>Query.chirpsByAuthorId</code>. And to get from a chirp to its author, we can use the chirp’s <code>authorId</code> field to call the existing <code>Query.userById</code> field.</p>
+<p>Resolvers for fields in schemas created by <code>mergeSchema</code> have access to a handy <code>delegateToSchema</code> function (exposed via <code>info.mergeInfo.delegateToSchema</code>) that allows forwarding parts of queries (or even whole new queries) to one of the subschemas that was passed to <code>mergeSchemas</code>.</p>
+<p>In order to delegate to these root fields, we’ll need to make sure we’ve actually requested the <code>id</code> of the user or the <code>authorId</code> of the chirp. To avoid forcing users to add these fields to their queries manually, resolvers on a merged schema can define a <code>fragment</code> property that specifies the required fields, and they will be added to the query automatically.</p>
+<p>A complete implementation of schema stitching for these schemas might look like this:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const mergedSchema = mergeSchemas({
+  schemas: [
+    chirpSchema,
+    authorSchema,
+    linkTypeDefs,
+  ],
+  resolvers: {
+    User: {
+      chirps: {
+        fragment: `fragment UserFragment on User { id }`,
+        resolve(user, args, context, info) {
+          return info.mergeInfo.delegateToSchema({
+            schema: chirpSchema,
+            operation: &#39;query&#39;,
+            fieldName: &#39;chirpsByAuthorId&#39;,
+            args: {
+              authorId: user.id,
+            },
+            context,
+            info,
+          });
+        },
+      },
+    },
+    Chirp: {
+      author: {
+        fragment: `fragment ChirpFragment on Chirp { authorId }`,
+        resolve(chirp, args, context, info) {
+          return info.mergeInfo.delegateToSchema({
+            schema: authorSchema,
+            operation: &#39;query&#39;,
+            fieldName: &#39;userById&#39;,
+            args: {
+              id: chirp.authorId,
+            },
+            context,
+            info,
+          });
+        },
+      },
+    },
+  },
+});
+</code></pre>
+<h2 id="using-with-transforms">Using with Transforms</h2>
+
+<p>Often, when creating a GraphQL gateway that combines multiple existing schemas, we might want to modify one of the schemas. The most common tasks include renaming some of the types, and filtering the root fields. By using <a href="./schema-transforms.html">transforms</a> with schema stitching, we can easily tweak the subschemas before merging them together.</p>
+<p>Before, when we were simply merging schemas without first transforming them, we would typically delegate directly to one of the merged schemas. Once we add transforms to the mix, there are times when we want to delegate to fields of the new, transformed schemas, and other times when we want to delegate to the original, untransformed schemas.</p>
+<p>For example, suppose we transform the <code>chirpSchema</code> by removing the <code>chirpsByAuthorId</code> field and add a <code>Chirp_</code> prefix to all types and field names, in order to make it very clear which types and fields came from <code>chirpSchema</code>:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const {
+  makeExecutableSchema,
+  addMockFunctionsToSchema,
+  mergeSchemas,
+  transformSchema,
+  FilterRootFields,
+  RenameTypes,
+  RenameRootFields,
+} = require(&#39;apollo-server&#39;);
+
+&#x2F;&#x2F; Mocked chirp schema; we don&#39;t want to worry about the schema
+&#x2F;&#x2F; implementation right now since we&#39;re just demonstrating
+&#x2F;&#x2F; schema stitching
+const chirpSchema = makeExecutableSchema({
+  typeDefs: gql`
+    type Chirp {
+      id: ID!
+      text: String
+      authorId: ID!
+    }
+
+    type Query {
+      chirpById(id: ID!): Chirp
+      chirpsByAuthorId(authorId: ID!): [Chirp]
+    }
+  `
+});
+
+addMockFunctionsToSchema({ schema: chirpSchema });
+
+&#x2F;&#x2F; create transform schema
+
+const transformedChirpSchema = transformSchema(chirpSchema, [
+  new FilterRootFields(
+    (operation: string, rootField: string) =&gt; rootField !== &#39;chirpsByAuthorId&#39;
+  ),
+  new RenameTypes((name: string) =&gt; `Chirp_${name}`),
+  new RenameRootFields((name: string) =&gt; `Chirp_${name}`),
+]);
+</code></pre>
+<p>Now we have a schema that has all fields and types prefixed with <code>Chirp_</code> and has only the <code>chirpById</code> root field. Note that the original schema has not been modified, and remains fully functional. We’ve simply created a new, slightly different schema, which hopefully will be more convenient for merging with our other subschemas.</p>
+<p>Now let’s implement the resolvers:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const mergedSchema = mergeSchemas({
+  schemas: [
+    transformedChirpSchema,
+    authorSchema,
+    linkTypeDefs,
+  ],
+  resolvers: {
+    User: {
+      chirps: {
+        fragment: `fragment UserFragment on User { id }`,
+        resolve(user, args, context, info) {
+          return info.mergeInfo.delegateToSchema({
+            schema: chirpSchema,
+            operation: &#39;query&#39;,
+            fieldName: &#39;chirpsByAuthorId&#39;,
+            args: {
+              authorId: user.id,
+            },
+            context,
+            info,
+            transforms: transformedChirpSchema.transforms,
+          });
+        },
+      },
+    },
+    Chirp_Chirp: {
+      author: {
+        fragment: `fragment ChirpFragment on Chirp { authorId }`,
+        resolve(chirp, args, context, info) {
+          return info.mergeInfo.delegateToSchema({
+            schema: authorSchema,
+            operation: &#39;query&#39;,
+            fieldName: &#39;userById&#39;,
+            args: {
+              id: chirp.authorId,
+            },
+            context,
+            info,
+          });
+        },
+      },
+    },
+  },
+});
+
+const server = new ApolloServer({ schema: mergedSchema });
+
+server.listen().then(({ url }) =&gt; {
+  console.log(`🚀 Server ready at ${url}`)
+});
+</code></pre>
+<p>Notice that <code>resolvers.Chirp_Chirp</code> has been renamed from just <code>Chirp</code>, but <code>resolvers.Chirp_Chirp.author.fragment</code> still refers to the original <code>Chirp</code> type and <code>authorId</code> field, rather than <code>Chirp_Chirp</code> and <code>Chirp_authorId</code>.</p>
+<p>Also, when we call <code>info.mergeInfo.delegateToSchema</code> in the <code>User.chirps</code> resolvers, we can delegate to the original <code>chirpsByAuthorId</code> field, even though it has been filtered out of the final schema. That’s because we’re delegating to the original <code>chirpSchema</code>, which has not been modified by the transforms.</p>
+<h2 id="complex-example">Complex example</h2>
+
+<p>For a more complicated example involving properties and bookings, with implementations of all of the resolvers, check out the Launchpad links below:</p>
+<ul>
+<li><a href="https://launchpad.graphql.com/v7l45qkw3" target="_blank" rel="noopener">Property schema</a></li>
+<li><a href="https://launchpad.graphql.com/41p4j4309" target="_blank" rel="noopener">Booking schema</a></li>
+<li><a href="https://launchpad.graphql.com/q5kq9z15p" target="_blank" rel="noopener">Merged schema</a></li>
+</ul>
+<h2 id="api">API</h2>
+
+<h3 id="mergeSchemas">mergeSchemas</h3>
+
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-ts">mergeSchemas({
+  schemas: Array&lt;string | GraphQLSchema | Array&lt;GraphQLNamedType&gt;&gt;;
+  resolvers?: Array&lt;IResolvers&gt; | IResolvers;
+  onTypeConflict?: (
+    left: GraphQLNamedType,
+    right: GraphQLNamedType,
+    info?: {
+      left: {
+        schema?: GraphQLSchema;
+      };
+      right: {
+        schema?: GraphQLSchema;
+      };
+    },
+  ) =&gt; GraphQLNamedType;
+})
+</code></pre>
+<p>This is the main function that implements schema stitching. Read below for a description of each option.</p>
+<h4 id="schemas"><a href="#schemas" class="headerlink" title="schemas"></a>schemas</h4><p><code>schemas</code> is an array of <code>GraphQLSchema</code> objects, schema strings, or lists of <code>GraphQLNamedType</code>s. Strings can contain type extensions or GraphQL types, which will be added to resulting schema. Note that type extensions are always applied last, while types are defined in the order in which they are provided.</p>
+<h4 id="resolvers"><a href="#resolvers" class="headerlink" title="resolvers"></a>resolvers</h4><p><code>resolvers</code> accepts resolvers in same format as <a href="./resolvers.html">makeExecutableSchema</a>. It can also take an Array of resolvers. One addition to the resolver format is the possibility to specify a <code>fragment</code> for a resolver. The <code>fragment</code> must be a GraphQL fragment definition string, specifying which fields from the parent schema are required for the resolver to function properly.</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">resolvers: {
+  Booking: {
+    property: {
+      fragment: &#39;fragment BookingFragment on Booking { propertyId }&#39;,
+      resolve(parent, args, context, info) {
+        return mergeInfo.delegateToSchema({
+          schema: bookingSchema,
+          operation: &#39;query&#39;,
+          fieldName: &#39;propertyById&#39;,
+          args: {
+            id: parent.propertyId,
+          },
+          context,
+          info,
+        });
+      },
+    },
+  },
+}
+</code></pre>
+<h4 id="mergeInfo-and-delegateToSchema"><a href="#mergeInfo-and-delegateToSchema" class="headerlink" title="mergeInfo and delegateToSchema"></a>mergeInfo and delegateToSchema</h4><p>The <code>info.mergeInfo</code> object provides the <code>delegateToSchema</code> method:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">type MergeInfo = {
+  delegateToSchema&lt;TContext&gt;(options: IDelegateToSchemaOptions&lt;TContext&gt;): any;
+}
+
+interface IDelegateToSchemaOptions&lt;TContext = {
+    [key: string]: any;
+}&gt; {
+    schema: GraphQLSchema;
+    operation: Operation;
+    fieldName: string;
+    args?: {
+        [key: string]: any;
+    };
+    context: TContext;
+    info: GraphQLResolveInfo;
+    transforms?: Array&lt;Transform&gt;;
+}
+</code></pre>
+<p>As described in the documentation above, <code>info.mergeInfo.delegateToSchema</code> allows delegating to any <code>GraphQLSchema</code> object, optionally applying transforms in the process. See <a href="./schema-delegation.html">Schema Delegation</a> and the <a href="#using-with-transforms"><em>Using with transforms</em></a> section of this document.</p>
+<h4 id="onTypeConflict"><a href="#onTypeConflict" class="headerlink" title="onTypeConflict"></a>onTypeConflict</h4>
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">type OnTypeConflict = (
+  left: GraphQLNamedType,
+  right: GraphQLNamedType,
+  info?: {
+    left: {
+      schema?: GraphQLSchema;
+    };
+    right: {
+      schema?: GraphQLSchema;
+    };
+  },
+) =&gt; GraphQLNamedType;
+</code></pre>
+<p>The <code>onTypeConflict</code> option to <code>mergeSchemas</code> allows customization of type resolving logic.</p>
+<p>The default behavior of <code>mergeSchemas</code> is to take the first encountered type of all the types with the same name. If there are conflicts, <code>onTypeConflict</code> enables explicit selection of the winning type.</p>
+<p>For example, here’s how we could select the last type among multiple types with the same name:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const onTypeConflict = (left, right) =&gt; right;
+</code></pre>
+<p>And here’s how we might select the type whose schema has the latest <code>version</code>:</p>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style=""><code class="language-js">const onTypeConflict = (left, right, info) =&gt; {
+  if (info.left.schema.version &gt;= info.right.schema.version) {
+    return left;
+  } else {
+    return right;
+  }
+}
+</code></pre>
+<p>When using schema transforms, <code>onTypeConflict</code> is often unnecessary, since transforms can be used to prevent conflicts before merging schemas. However, if you’re not using schema transforms, <code>onTypeConflict</code> can be a quick way to make <code>mergeSchemas</code> produce more desirable results.</p>
+
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="content-wrapper">
+          
+          
+          
+           
+              <a class="link primary next" href="../index.html">
+                <span class="subtitle-pagination">Next</span>
+                Introduction
+                  <span class="icon-arrow-right-alt"></span>
+              </a>
+           
+          
+        </div>
+      </div>
+
+      <div class="github">
+        <a class="link tertiary " href="https://github.com/apollographql/apollo-server/tree/master/docs/source/features/schema-stitching.md" target="_blank">
+          <span class="icon-github"></span>Edit on GitHub</a>
+      </div>
+
+      
+    </div>
+
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/combine/npm/prismjs@1.15.0/components/prism-bash.min.js,npm/prismjs@1.15.0/components/prism-graphql.min.js,npm/prismjs@1.15.0/components/prism-json.min.js,npm/prismjs@1.15.0/components/prism-jsx.min.js,npm/prismjs@1.15.0/components/prism-less.min.js,npm/prismjs@1.15.0/components/prism-swift.min.js,npm/prismjs@1.15.0/components/prism-typescript.min.js,npm/prismjs@1.15.0/components/prism-yaml.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/smooth-scroll@12.1.5/dist/js/smooth-scroll.min.js"></script>
+
+    <script>
+      // Used by the main.js script below.
+      docsConfigRoot = '/docs/apollo-server/';
+    </script>
+    <script src="../script/main.js"></script>
+
+    
+      <script type="text/javascript" src="//cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+    </script>
+
+    
+
+    
+      <script>
+        
+        var analytics;
+
+        <!-- Segment.io -->
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+        analytics.page();
+        }}();
+      </script>
+    
+
+    // search box
+    
+      <script>
+        ['desktop'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: '768e823959d35bbd51e4b2439be13fb7',
+            
+            
+            indexName: 'apollodata',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            },
+            algoliaOptions: {
+              hitsPerPage: 20
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      </script>
+    
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener('load', function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: '#555',
+            },
+            button: {
+              text: '#333',
+              background: '#CCC',
+            },
+          },
+        })
+      });
+    </script>
+  </body>
+</html>
